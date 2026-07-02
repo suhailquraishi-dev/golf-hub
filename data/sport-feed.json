@@ -1,0 +1,149 @@
+{
+  "sport": "tennis",
+  "runs": [
+    {
+      "time": "8:15 AM ET",
+      "label": "Tennis Trending (US)",
+      "sport": "tennis",
+      "items": [
+        {
+          "source": "twitter",
+          "text": "Sinner becomes the first Italian man to win Wimbledon as Alcaraz falls short of a hat-trick.",
+          "handle": "@Wimbledon",
+          "url": "https://x.com/Wimbledon/status/1944463436030656688",
+          "views": "580k",
+          "likes": "19.2k",
+          "profileImage": "assets/profile-images/wimbledon.jpg",
+          "imageUrl": "assets/media/wimbledon/sinner-kecmanovic.jpg",
+          "timestamp": "8:15 AM ET"
+        },
+        {
+          "source": "reddit",
+          "text": "Wimbledon R1: Borges def. [Q] Boyer 6-3, 7-5, 7-5",
+          "subreddit": "r/tennis",
+          "url": "https://reddit.com/r/tennis/comments/1uiuzz2/crazy_point_from_sinner_vs_kecmanovic/",
+          "score": "1850",
+          "comments": "445",
+          "timestamp": "8:15 AM ET"
+        },
+        {
+          "source": "es",
+          "text": "Andy Roddick sees warning signs in Jannik Sinner's Wimbledon escape",
+          "url": "https://www.essentiallysports.com/?card=sinner",
+          "ogImage": "assets/media/wimbledon/jack-draper.jpg",
+          "description": "Sinner survived his opener, but Andy Roddick believes the defending champion left a few tactical concerns on the grass.",
+          "timestamp": "8:15 AM ET"
+        },
+        {
+          "source": "instagram",
+          "text": "Maya Joint found the words after the biggest win of her young career.",
+          "handle": "wimbledon",
+          "url": "https://www.instagram.com/p/wimbledon-joint/",
+          "views": "760k",
+          "likes": "31.2k",
+          "imageUrl": "assets/media/wimbledon/serena-joint-ap.jpg",
+          "profileImage": "assets/profile-images/wimbledon.jpg",
+          "verified": true,
+          "timestamp": "8:15 AM ET"
+        }
+      ]
+    },
+    {
+      "time": "10:45 AM ET",
+      "label": "Tennis Trending (US)",
+      "sport": "tennis",
+      "items": [
+        {
+          "source": "twitter",
+          "text": "Alcaraz survives Fritz and books a third straight Wimbledon final after another tight grass-court test.",
+          "handle": "@Wimbledon",
+          "url": "https://x.com/Wimbledon/status/1943696117998174525",
+          "views": "480k",
+          "likes": "17.1k",
+          "profileImage": "assets/profile-images/wimbledon.jpg",
+          "imageUrl": "assets/media/wimbledon/williams-joint.jpg",
+          "timestamp": "10:45 AM ET"
+        },
+        {
+          "source": "reddit",
+          "text": "Fans debate whether five sets helped or hurt Sinner before round two.",
+          "subreddit": "r/tennis",
+          "url": "https://reddit.com/r/tennis/comments/1uiuzz2/crazy_point_from_sinner_vs_kecmanovic/#debate",
+          "score": "920",
+          "comments": "188",
+          "timestamp": "10:45 AM ET"
+        },
+        {
+          "source": "es",
+          "text": "Jack Draper's withdrawal reshapes British hopes at SW19",
+          "url": "https://www.essentiallysports.com/?card=draper",
+          "ogImage": "assets/media/wimbledon/jack-draper.jpg",
+          "description": "The British No.1's exit changes the home story at Wimbledon and opens the door for a different name to carry the crowd.",
+          "timestamp": "10:45 AM ET"
+        },
+        {
+          "source": "instagram",
+          "text": "Centre Court gave Maya Joint a night she will never forget.",
+          "handle": "essentiallysportsmedia",
+          "url": "https://www.instagram.com/p/es-maya-joint/",
+          "views": "410k",
+          "likes": "12.6k",
+          "imageUrl": "assets/media/wimbledon/serena-joint-ap.jpg",
+          "profileImage": "assets/profile-images/es-logo.jpg",
+          "verified": true,
+          "timestamp": "10:45 AM ET"
+        }
+      ]
+    },
+    {
+      "time": "12:30 PM ET",
+      "label": "Tennis Trending (US)",
+      "sport": "tennis",
+      "items": [
+        {
+          "source": "twitter",
+          "text": "Wimbledon turns toward the Sinner-Djokovic stage after Alcaraz punches his ticket to Sunday.",
+          "handle": "@Wimbledon",
+          "url": "https://x.com/Wimbledon/status/1943696906674180595",
+          "views": "355k",
+          "likes": "8.8k",
+          "profileImage": "assets/profile-images/wimbledon.jpg",
+          "imageUrl": "assets/media/wimbledon/sinner-kecmanovic.jpg",
+          "timestamp": "12:30 PM ET"
+        },
+        {
+          "source": "reddit",
+          "text": "Queue reports pass 9,000 before breakfast on another packed Wimbledon morning.",
+          "subreddit": "r/wimbledon",
+          "url": "https://reddit.com/r/wimbledon/comments/1twqis5/wimbledon_queue_2026_megathread/",
+          "score": "640",
+          "comments": "122",
+          "timestamp": "12:30 PM ET"
+        },
+        {
+          "source": "es",
+          "text": "Where and how to watch Wimbledon in the United States",
+          "url": "https://www.essentiallysports.com/?card=watch",
+          "ogImage": "assets/media/wimbledon/williams-joint.jpg",
+          "description": "US coverage begins early across ESPN platforms while BBC carries every court for UK viewers.",
+          "timestamp": "12:30 PM ET"
+        },
+        {
+          "source": "instagram",
+          "text": "Sinner's grass-court movement became the clip everyone replayed.",
+          "handle": "atptour",
+          "url": "https://www.instagram.com/p/atp-sinner-grass/",
+          "views": "295k",
+          "likes": "10.4k",
+          "imageUrl": "assets/media/wimbledon/williams-joint.jpg",
+          "profileImage": "assets/profile-images/sources/atptour.jpg",
+          "verified": true,
+          "timestamp": "12:30 PM ET"
+        }
+      ]
+    }
+  ],
+  "lastFile": "tennis-news-2026-07-01.md",
+  "fileCount": 1,
+  "fetchedAt": "2026-07-01T13:45:00.000Z"
+}

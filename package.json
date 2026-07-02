@@ -1,0 +1,15 @@
+{
+  "name": "essentiallysports-social-hub",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "EssentiallySports Wimbledon social hub with markdown-backed feed parsing, source enrichment, and static fallbacks.",
+  "scripts": {
+    "start": "node server.mjs",
+    "start:dev": "PORT=8765 node server.mjs",
+    "check": "node --check server.mjs && node --check assets/js/social-feed.js && node --check assets/js/score-ticker.js && node -e \"for (const f of ['data/sport-feed.json','data/sport-feed-youtube.json','data/score-ticker.json']) JSON.parse(require('fs').readFileSync(f,'utf8')); console.log('checks passed')\""
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

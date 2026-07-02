@@ -1,0 +1,21 @@
+{
+  "name": "es-social-feed-engine",
+  "version": "1.0.0",
+  "description": "EssentiallySports social trending feed — data/logic layer. Design-agnostic.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "UNLICENSED",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "peerDependencies": {
+    "react-tweet": "^3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react-tweet": {
+      "optional": true
+    }
+  },
+  "keywords": ["essentiallysports", "social-feed", "tennis", "wimbledon"]
+}

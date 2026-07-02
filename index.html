@@ -1,0 +1,2886 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Wimbledon Social Hub | EssentiallySports</title>
+  <meta name="description" content="Wimbledon updates, trends, highlights and fan conversation from across the web.">
+  <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Condensed:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: "Acumin ES";
+      src: url("assets/fonts/acumin-pro-condensed-bold.otf") format("opentype");
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      color-scheme: light;
+      --es-blue: #0a7dfa;
+      --es-navy: #033162;
+      --page: #f6f8fb;
+      --card: #ffffff;
+      --line: #dce4ee;
+      --text: #121417;
+      --muted: #667085;
+      --soft: #98a2b3;
+      --shadow: 0 10px 28px rgba(16, 24, 40, 0.08);
+      --max: 1220px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      overflow-x: hidden;
+      color: var(--text);
+      background: var(--page);
+      font-family: "Roboto", Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    body.dark {
+      color-scheme: dark;
+      --page: #11161d;
+      --card: #171d25;
+      --line: #2a3441;
+      --text: #f4f7fb;
+      --muted: #a9b4c3;
+      --soft: #7e8a9a;
+      --shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+    }
+
+    button {
+      border: 0;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      min-height: 69px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--es-blue);
+      background: #ffffff;
+      box-shadow: none;
+    }
+
+    body.dark .site-nav {
+      background: #ffffff;
+    }
+
+    .site-logo {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      margin-right: 52px;
+    }
+
+    .site-logo img {
+      height: 31px;
+      width: auto;
+    }
+
+    .site-menu {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      flex: 1;
+      min-width: 0;
+      font-family: "Acumin ES", "Roboto Condensed", Arial, sans-serif;
+      font-size: 18px;
+      font-weight: 900;
+      color: #111111;
+    }
+
+    .site-menu-item {
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .site-menu a,
+    .site-menu-button {
+      font: inherit;
+      line-height: 1;
+      text-transform: uppercase;
+      color: inherit;
+    }
+
+    .site-menu-button {
+      display: inline-flex;
+      align-items: center;
+      border: 0;
+      padding: 0;
+      background: transparent;
+      cursor: default;
+    }
+
+    .site-menu-button::after {
+      width: 16px;
+      height: 10px;
+      margin-left: 8px;
+      background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxNiAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE0Ljk3NjYgMS4xNDA2Mkw3Ljk3NjU2IDcuMTQwNjNMMC45NzY1NjMgMS4xNDA2MiIgc3Ryb2tlPSIjMEE3REZBIiBzdHJva2Utd2lkdGg9IjMiLz4KPC9zdmc+Cg==") center / contain no-repeat;
+      transform: translateY(1px);
+      content: "";
+    }
+
+    .site-menu a:hover,
+    .site-menu-button:hover {
+      color: var(--es-blue);
+    }
+
+    .site-dropdown {
+      position: absolute;
+      top: calc(100% + 12px);
+      left: 0;
+      min-width: 176px;
+      display: grid;
+      gap: 4px;
+      padding: 10px;
+      border: 1px solid #b5d8fd;
+      border-radius: 6px;
+      background: #ffffff;
+      box-shadow: 0 15px 27px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(8px) scale(.98);
+      transform-origin: top left;
+      transition: opacity .24s cubic-bezier(.16, 1, .3, 1), transform .24s cubic-bezier(.16, 1, .3, 1), visibility .24s cubic-bezier(.16, 1, .3, 1);
+    }
+
+    .site-menu-item:hover .site-dropdown,
+    .site-menu-item.is-open .site-dropdown,
+    .site-menu-item:focus-within .site-dropdown {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+    }
+
+    .site-dropdown a {
+      position: relative;
+      padding: 10px 12px;
+      border-radius: 6px;
+      color: #033162;
+      font-family: "Roboto Condensed", "Roboto", Arial, sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      text-transform: none;
+      white-space: nowrap;
+      transition: color .22s cubic-bezier(.16, 1, .3, 1), background-color .22s cubic-bezier(.16, 1, .3, 1), transform .22s cubic-bezier(.16, 1, .3, 1);
+    }
+
+    .site-dropdown a:hover {
+      background: #e8f2ff;
+      color: var(--es-blue);
+      transform: translateX(4px);
+    }
+
+    .site-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      flex: 0 0 auto;
+      margin-left: auto;
+    }
+
+    .site-actions a {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      place-items: center;
+      justify-content: center;
+      border: 0;
+      background: transparent;
+      transition: opacity .15s ease;
+    }
+
+    .site-actions a:hover {
+      opacity: .72;
+    }
+
+    .site-actions img {
+      width: 28px;
+      height: 28px;
+    }
+
+    .site-nav-toggle {
+      width: 38px;
+      height: 38px;
+      display: none;
+      place-items: center;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+    }
+
+    .site-nav-toggle svg {
+      width: 27px;
+      height: 27px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+    }
+
+    .page {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+      padding: 0 0 56px;
+    }
+
+    .score-ticker {
+      width: 100vw;
+      max-width: 100vw;
+      display: grid;
+      grid-template-columns: 132px minmax(0, 1fr);
+      min-height: 72px;
+      margin-left: calc(50% - 50vw);
+      margin-bottom: 18px;
+      overflow: hidden;
+      border-radius: 0;
+      background: #ffffff;
+      font-family: "Acumin ES", "Roboto Condensed", Arial, sans-serif;
+    }
+
+    body.dark .score-ticker {
+      background: #171d25;
+    }
+
+    .ticker-title {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 8px 8px 7px;
+      border-right: 3px solid #7c2fcf;
+      color: #111827;
+      background: #ffffff;
+    }
+
+    .ticker-title img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      flex: 0 0 auto;
+    }
+
+    .ticker-title span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      color: #000000;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1;
+      text-align: center;
+    }
+
+    .ticker-live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      flex: 0 0 auto;
+      background: #ef233c;
+    }
+
+    .ticker-window {
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    body.dark .ticker-window {
+      background: #171d25;
+    }
+
+    .ticker-window::before,
+    .ticker-window::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      z-index: 2;
+      width: 34px;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .ticker-window::before {
+      left: 0;
+      background: linear-gradient(90deg, var(--card), rgba(255, 255, 255, 0));
+    }
+
+    .ticker-window::after {
+      right: 0;
+      background: linear-gradient(270deg, var(--card), rgba(255, 255, 255, 0));
+    }
+
+    .ticker-track {
+      display: flex;
+      width: max-content;
+      min-height: 100%;
+      animation: ticker-scroll 42s linear infinite;
+      will-change: transform;
+    }
+
+    .score-ticker:hover .ticker-track {
+      animation-play-state: paused;
+    }
+
+    .ticker-loop {
+      display: flex;
+      flex: 0 0 auto;
+    }
+
+    .ticker-card {
+      --score-count: 2;
+      --score-space: clamp(6px, calc(5px + (var(--score-count) * 1.45px)), 12px);
+      min-width: clamp(218px, calc(184px + (var(--score-count) * 28px)), 338px);
+      display: grid;
+      grid-template-columns: minmax(116px, 1fr) max-content;
+      align-items: start;
+      gap: clamp(9px, calc(7px + (var(--score-count) * 1px)), 13px);
+      padding: 12px clamp(10px, calc(8px + (var(--score-count) * 1.35px)), 15px) 9px;
+      border-right: 1px solid #9d9d9d;
+      background: #ffffff;
+    }
+
+    body.dark .ticker-card {
+      background: #171d25;
+    }
+
+    .ticker-status {
+      display: none;
+    }
+
+    .ticker-card.is-live .ticker-status {
+      background: #ef3d36;
+    }
+
+    .ticker-match {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: 13px 18px 18px;
+      row-gap: 4px;
+      align-items: start;
+    }
+
+    .ticker-row {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .ticker-player {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .ticker-seed {
+      margin-right: 4px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .ticker-meta {
+      overflow: hidden;
+      color: var(--muted);
+      font-family: "Roboto", Arial, sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1.1;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      align-self: start;
+    }
+
+    .ticker-division {
+      font-weight: 400;
+    }
+
+    .ticker-divider {
+      margin: 0 3px;
+    }
+
+    .ticker-score {
+      display: flex;
+      align-items: start;
+      gap: var(--score-space);
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 900;
+      margin-top: 17px;
+    }
+
+    .score-set {
+      display: grid;
+      grid-template-rows: 18px 18px;
+      align-items: start;
+      gap: 0;
+      color: var(--muted);
+      line-height: 1;
+      text-align: center;
+    }
+
+    .score-set b {
+      min-width: 13px;
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    .score-point b {
+      color: #4c1d95;
+    }
+
+    .ticker-score b.is-winning-score {
+      color: #007649;
+    }
+
+    .ticker-score b.is-losing-score {
+      color: #606060;
+    }
+
+    .ticker-updated {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    @keyframes ticker-scroll {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ticker-track {
+        animation: none;
+      }
+    }
+
+    .hub-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 28px;
+      margin-bottom: 22px;
+      padding-bottom: 26px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand-kicker {
+      width: max-content;
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      margin-bottom: 12px;
+      padding: 0 10px;
+      border: 1px solid #b5d8fd;
+      border-radius: 8px;
+      color: var(--es-blue);
+      background: #e8f2ff;
+      font-family: "Roboto", Arial, sans-serif;
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    body.dark .brand-kicker {
+      color: #b5d8fd;
+      background: rgba(10, 125, 250, 0.14);
+      border-color: rgba(181, 216, 253, 0.25);
+    }
+
+    h1,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      color: var(--text);
+      font-family: "Acumin ES", "Roboto Condensed", Arial, sans-serif;
+      font-size: clamp(48px, 8vw, 90px);
+      font-weight: 900;
+      line-height: 0.88;
+      text-transform: uppercase;
+    }
+
+    .hero-copy {
+      max-width: 700px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: clamp(17px, 1.7vw, 22px);
+      font-weight: 500;
+      line-height: 1.32;
+    }
+
+    .hub-meta {
+      display: grid;
+      gap: 8px;
+      justify-items: end;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .hub-meta strong {
+      color: var(--es-blue);
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    .feed {
+      --feed-gap: 18px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-auto-flow: dense;
+      grid-auto-rows: 8px;
+      gap: var(--feed-gap);
+      align-items: start;
+    }
+
+    @media (min-width: 761px) {
+      .feed.masonry-ready {
+        position: relative;
+        display: block;
+      }
+
+      .feed.masonry-ready .social-card {
+        position: absolute;
+        margin: 0;
+      }
+    }
+
+    .feed-refresh-banner {
+      width: fit-content;
+      margin: 0 auto 14px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #111827;
+      color: #ffffff;
+      font-family: "Roboto", Arial, sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.16);
+    }
+
+    .feed-refresh-banner[hidden] {
+      display: none;
+    }
+
+    .feed-sentinel {
+      width: 100%;
+      height: 1px;
+    }
+
+    .scroll-hint {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 60;
+      width: 62px;
+      height: 62px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #edf1f6;
+      border-radius: 14px;
+      background: #ffffff;
+      color: #111820;
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.16);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px) scale(0.96);
+      transition:
+        opacity 260ms ease,
+        transform 320ms cubic-bezier(.2, .85, .2, 1);
+    }
+
+    .scroll-hint.is-visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+    }
+
+    .scroll-hint-icon {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      color: var(--es-blue);
+      overflow: hidden;
+    }
+
+    .scroll-hint-icon::before,
+    .scroll-hint-icon::after {
+      position: absolute;
+      left: 50%;
+      bottom: 7px;
+      width: 2px;
+      height: 9px;
+      border-radius: 999px;
+      background: currentColor;
+      opacity: 0;
+      content: "";
+      transform: translateX(-50%) translateY(5px);
+      animation: swipe-trail 2s ease-in-out infinite;
+    }
+
+    .scroll-hint-icon::after {
+      bottom: 11px;
+      height: 6px;
+      animation-delay: 90ms;
+    }
+
+    .scroll-hint-icon svg {
+      width: 29px;
+      height: 29px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      animation: swipe-hand 2s ease-in-out infinite;
+    }
+
+    @keyframes swipe-hand {
+      0%, 14% {
+        transform: translateY(5px);
+      }
+      48%, 62% {
+        transform: translateY(-5px);
+      }
+      82%, 100% {
+        transform: translateY(5px);
+      }
+    }
+
+    @keyframes swipe-trail {
+      0%, 16%, 68%, 100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(7px) scaleY(.45);
+      }
+      30% {
+        opacity: .22;
+      }
+      48% {
+        opacity: .08;
+        transform: translateX(-50%) translateY(-4px) scaleY(1);
+      }
+    }
+
+    .social-card {
+      --entry-accent: #1473e6;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 0;
+      border-radius: 14px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+      font-family: "Roboto", Arial, sans-serif;
+      height: auto;
+    }
+
+    .instagram-card {
+      --entry-accent: #e1306c;
+    }
+
+    .twitter-card,
+    .threads-card {
+      --entry-accent: #111111;
+    }
+
+    .youtube-card {
+      --entry-accent: #ff0033;
+    }
+
+    .facebook-card {
+      --entry-accent: #1877f2;
+    }
+
+    .reddit-card {
+      --entry-accent: #ff4500;
+    }
+
+    .es-card {
+      --entry-accent: #1473e6;
+    }
+
+    .poll-card {
+      --entry-accent: #1473e6;
+    }
+
+    .update-card {
+      --entry-accent: #006633;
+    }
+
+    body.dark .twitter-card,
+    body.dark .threads-card {
+      --entry-accent: #f5f5f5;
+    }
+
+    @property --entry-stroke-angle {
+      syntax: "<angle>";
+      inherits: false;
+      initial-value: 0deg;
+    }
+
+    .social-card.is-entry-highlight {
+      scroll-margin-top: 12px;
+      box-shadow:
+        0 0 0 1px color-mix(in srgb, var(--entry-accent) 38%, transparent),
+        var(--shadow);
+    }
+
+    .social-card.is-entry-highlight::after {
+      position: absolute;
+      z-index: 20;
+      inset: 0;
+      padding: 1px;
+      border-radius: inherit;
+      background: conic-gradient(
+        from var(--entry-stroke-angle),
+        transparent 0deg,
+        transparent 245deg,
+        color-mix(in srgb, var(--entry-accent) 35%, transparent) 270deg,
+        var(--entry-accent) 310deg,
+        transparent 350deg
+      );
+      content: "";
+      pointer-events: none;
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: entry-stroke-orbit 6s linear 1 forwards;
+    }
+
+    @keyframes entry-stroke-orbit {
+      to {
+        --entry-stroke-angle: 360deg;
+      }
+    }
+
+    .card-title-slot {
+      position: relative;
+      display: grid;
+      gap: 5px;
+      margin: 0;
+      padding: 16px 16px 13px;
+      border-bottom: 1px solid #eef2f6;
+      color: var(--text);
+      font-family: "Roboto", Arial, sans-serif;
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 1.08;
+    }
+
+    .card-title-kicker {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .card-title-text {
+      display: block;
+    }
+
+    body.dark .card-title-slot {
+      border-bottom-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .card-short,
+    .card-mini,
+    .card-medium,
+    .card-tall {
+      min-height: 0;
+    }
+
+    .card-wide {
+      grid-column: span 2;
+      min-height: 0;
+    }
+
+    .card-wide .post-body {
+      display: grid;
+      grid-template-columns: minmax(260px, .9fr) minmax(0, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .card-wide .youtube-thumb,
+    .card-wide .media {
+      margin: 0;
+      border-radius: 12px;
+      border-width: 1px;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 14px 10px;
+    }
+
+    .card-title-slot + .post-header {
+      padding-top: 13px;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      box-sizing: border-box;
+      padding: 2px;
+      object-fit: contain;
+      background: #e8eef5;
+    }
+
+    .user-meta {
+      min-width: 0;
+      display: grid;
+      gap: 2px;
+      flex: 1;
+    }
+
+    .user-line {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      min-width: 0;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .user-line span {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .verified {
+      width: 15px;
+      height: 15px;
+      flex: 0 0 auto;
+      display: block;
+    }
+
+    .subline {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.25;
+    }
+
+    .app-logo {
+      width: 26px;
+      height: 26px;
+      flex: 0 0 auto;
+      object-fit: contain;
+    }
+
+    .post-body {
+      padding: 0 14px 10px;
+      flex: 0 0 auto;
+    }
+
+    .post-title {
+      margin: 0;
+      color: var(--text);
+      font-size: 18px;
+      line-height: 1.24;
+      font-weight: 700;
+    }
+
+    .post-text {
+      margin-top: 8px;
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.45;
+      font-weight: 400;
+    }
+
+    .post-text .tag {
+      color: var(--es-blue);
+      font-weight: 500;
+    }
+
+    .media {
+      display: block;
+      overflow: hidden;
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #f2f4f7;
+    }
+
+    body.dark .media {
+      background: #10151c;
+    }
+
+    .media img {
+      width: 100%;
+      height: 100%;
+      min-height: 178px;
+      object-fit: cover;
+    }
+
+    .carousel-media {
+      position: relative;
+    }
+
+    .carousel-track {
+      display: flex;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+    }
+
+    .carousel-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .carousel-slide {
+      width: 100%;
+      min-width: 100%;
+      margin: 0;
+      flex: 0 0 100%;
+      scroll-snap-align: start;
+    }
+
+    .carousel-control {
+      position: absolute;
+      top: 50%;
+      z-index: 2;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.52);
+      color: #ffffff;
+      transform: translateY(-50%);
+      transition:
+        opacity 160ms ease,
+        background 160ms ease;
+    }
+
+    .carousel-control:hover {
+      background: rgba(0, 0, 0, 0.72);
+    }
+
+    .carousel-control:disabled {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .carousel-control svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .carousel-prev {
+      left: 10px;
+    }
+
+    .carousel-next {
+      right: 10px;
+    }
+
+    .carousel-count {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: inline-flex;
+      min-height: 22px;
+      align-items: center;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.68);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    .video-preview {
+      position: relative;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      color: #ffffff;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .video-preview img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .video-shell {
+      position: relative;
+    }
+
+    .video-shell youtube-video.video-frame {
+      position: absolute;
+      inset: 0;
+      height: 100%;
+      aspect-ratio: auto;
+      border-radius: inherit;
+    }
+
+    .video-shell .video-cover {
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      height: 100%;
+      margin: 0;
+      border-radius: inherit;
+      background: #000000;
+    }
+
+    .video-frame,
+    youtube-video.video-frame {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 0;
+      background: #000000;
+    }
+
+    .native-video video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: #000000;
+    }
+
+    .media.tall {
+      aspect-ratio: 4 / 5;
+    }
+
+    .media.square {
+      aspect-ratio: 1 / 1;
+    }
+
+    .media.wide {
+      aspect-ratio: 16 / 9;
+    }
+
+    .media.tall img,
+    .media.square img {
+      min-height: 250px;
+    }
+
+    .platform-actions {
+      margin-top: auto;
+      border-top: 1px solid var(--line);
+      background: var(--card);
+    }
+
+    .owned-actions {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-top: auto;
+      padding: 8px 14px 12px;
+      border-top: 0;
+      background: var(--card);
+    }
+
+    .owned-actions button {
+      min-height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .owned-actions button:last-child {
+      margin-left: 0;
+    }
+
+    .owned-actions svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .owned-actions button.active,
+    .owned-actions button[aria-pressed="true"] {
+      color: var(--text);
+      background: transparent;
+    }
+
+    .owned-actions button[data-owned-action="like"][aria-pressed="true"] svg {
+      fill: #ef4444;
+      stroke: #ef4444;
+      animation: heart-pop 320ms cubic-bezier(.2, .9, .28, 1.35);
+    }
+
+    .owned-actions button[data-owned-action="share"].active {
+      color: var(--es-blue);
+    }
+
+    @keyframes heart-pop {
+      0% {
+        transform: scale(1);
+      }
+      45% {
+        transform: scale(1.26);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    body.share-dialog-open {
+      overflow: hidden;
+    }
+
+    .share-dialog-backdrop {
+      position: fixed;
+      z-index: 1000;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(17, 24, 39, 0.38);
+      opacity: 0;
+      visibility: hidden;
+      transition:
+        opacity 180ms ease,
+        visibility 180ms ease;
+    }
+
+    .share-dialog-backdrop.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .share-dialog {
+      width: min(100%, 440px);
+      padding: 22px;
+      border: 1px solid #e8edf3;
+      border-radius: 14px;
+      background: var(--card);
+      box-shadow: 0 22px 60px rgba(17, 24, 39, 0.2);
+      color: var(--text);
+      opacity: 0;
+      transform: translateY(10px) scale(0.96);
+      transition:
+        opacity 180ms ease,
+        transform 240ms cubic-bezier(.2, .9, .3, 1.15);
+    }
+
+    .share-dialog-backdrop.is-open .share-dialog {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .share-dialog-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .share-dialog-title {
+      margin: 0;
+      font-family: "Roboto", Arial, sans-serif;
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    .share-dialog-close {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      flex: 0 0 auto;
+      place-items: center;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+    }
+
+    .share-dialog-close svg,
+    .share-copy-button svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .share-platforms {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .share-platform {
+      min-width: 0;
+      min-height: 76px;
+      display: grid;
+      place-items: center;
+      align-content: center;
+      gap: 8px;
+      padding: 10px 6px;
+      border: 1px solid #e8edf3;
+      border-radius: 8px;
+      background: var(--card);
+      color: var(--text);
+      font-family: "Roboto", Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      transition:
+        border-color 160ms ease,
+        background 160ms ease,
+        transform 160ms ease;
+    }
+
+    .share-platform:hover {
+      border-color: #cbd5e1;
+      background: #f8fafc;
+      transform: translateY(-2px);
+    }
+
+    .share-platform img {
+      width: 25px;
+      height: 25px;
+      display: block;
+      object-fit: contain;
+    }
+
+    .share-copy-button {
+      width: 100%;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      margin-top: 12px;
+      padding: 0 14px;
+      border: 1px solid #dce3eb;
+      border-radius: 8px;
+      background: #f8fafc;
+      color: var(--text);
+      font-family: "Roboto", Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .share-dialog-status {
+      min-height: 16px;
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-family: "Roboto", Arial, sans-serif;
+      font-size: 12px;
+      line-height: 16px;
+      text-align: center;
+    }
+
+    body.dark .share-dialog,
+    body.dark .share-platform,
+    body.dark .share-copy-button {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    body.dark .share-platform:hover,
+    body.dark .share-copy-button {
+      background: #202733;
+    }
+
+    .icon-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 14px;
+      color: var(--text);
+    }
+
+    .icon-row button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0;
+      background: transparent;
+      color: inherit;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .icon-row svg,
+    .reddit-votes svg {
+      width: 20px;
+      height: 20px;
+      display: block;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .facebook-card .icon-row svg,
+    .youtube-card .icon-row svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .reddit-votes svg {
+      width: 18px;
+      height: 18px;
+      stroke-width: 2.4;
+    }
+
+    .icon-row button.active {
+      color: #ef4444;
+    }
+
+    .icon-row .push {
+      margin-left: auto;
+    }
+
+    .metrics {
+      padding: 0 14px 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .instagram-card .post-body {
+      padding-inline: 0;
+    }
+
+    .instagram-card .caption {
+      padding: 0 14px;
+    }
+
+    .instagram-card .media {
+      margin: 0;
+      border-width: 1px 0;
+      border-radius: 0;
+    }
+
+    .youtube-card {
+      border-radius: 18px;
+    }
+
+    .youtube-card .post-header {
+      padding-bottom: 12px;
+    }
+
+    .youtube-thumb {
+      position: relative;
+      margin: 0;
+      border-width: 1px 0;
+      border-radius: 0;
+    }
+
+    .play-badge {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      width: 54px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      color: white;
+      background: rgba(0, 0, 0, 0.72);
+      transform: translate(-50%, -50%);
+      font-size: 18px;
+    }
+
+    .play-badge svg {
+      width: 20px;
+      height: 20px;
+      fill: #ffffff;
+      transform: translateX(1px);
+    }
+
+    .video-duration,
+    .video-source {
+      position: absolute;
+      bottom: 10px;
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+      padding: 3px 7px;
+      border-radius: 5px;
+      background: rgba(0, 0, 0, 0.78);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .video-duration {
+      right: 10px;
+    }
+
+    .video-source {
+      left: 10px;
+    }
+
+    .youtube-card .post-title {
+      margin-top: 12px;
+      font-size: 17px;
+    }
+
+    .es-card .media + .post-title {
+      margin-top: 18px;
+    }
+
+    .reddit-card .media + .post-title {
+      margin-top: 18px;
+    }
+
+    .article-link {
+      display: inline-flex;
+      width: fit-content;
+      margin-top: 10px;
+      color: var(--es-blue);
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .ad-card {
+      min-height: 0;
+      padding: 0;
+      box-shadow: none;
+      background: #eef0f2;
+    }
+
+    .ad-slot {
+      width: 100%;
+      min-height: 152px;
+      display: grid;
+      place-items: center;
+      align-content: center;
+      gap: 7px;
+      padding: 18px 16px;
+      border-radius: 14px;
+      background: #eef0f2;
+      color: #b8bec6;
+      font-family: "Roboto", Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .08em;
+    }
+
+    .ad-slot small {
+      color: #9aa3ae;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0;
+      text-align: center;
+    }
+
+    .ad-card-video .ad-slot {
+      aspect-ratio: 16 / 9;
+      min-height: 148px;
+    }
+
+    .ad-card-newsletter .ad-slot {
+      min-height: 132px;
+    }
+
+    .ad-card-sponsor .ad-slot {
+      min-height: 152px;
+    }
+
+    .poll-card {
+      overflow: hidden;
+      background: var(--card);
+    }
+
+    .poll-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 15px 16px 12px;
+      border-bottom: 1px solid #eef2f6;
+    }
+
+    .poll-header > div {
+      min-width: 0;
+      display: grid;
+      gap: 5px;
+    }
+
+    .poll-kicker {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .poll-kicker img {
+      width: 11px;
+      height: 11px;
+      object-fit: contain;
+    }
+
+    .poll-label {
+      color: var(--es-blue);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .poll-brand {
+      width: 30px;
+      height: 30px;
+      flex: 0 0 auto;
+      object-fit: contain;
+    }
+
+    .poll-body {
+      padding: 16px;
+    }
+
+    .poll-question {
+      margin: 0;
+      color: var(--text);
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    .poll-options {
+      display: grid;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .poll-option {
+      position: relative;
+      isolation: isolate;
+      width: 100%;
+      min-height: 43px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 16px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 12px;
+      border: 1px solid #dfe5ec;
+      border-radius: 6px;
+      background: var(--card);
+      color: var(--text);
+      font: inherit;
+      text-align: left;
+      transition: border-color .18s ease, transform .18s ease;
+    }
+
+    .poll-option:hover {
+      border-color: #97bce8;
+    }
+
+    .poll-option:focus-visible {
+      outline: 2px solid var(--es-blue);
+      outline-offset: 2px;
+    }
+
+    .poll-option:active {
+      transform: scale(.995);
+    }
+
+    .poll-option-fill {
+      position: absolute;
+      z-index: -1;
+      inset: 0 auto 0 0;
+      width: var(--poll-result);
+      background: #eaf4ff;
+      transition: width .45s cubic-bezier(.2, .8, .2, 1);
+    }
+
+    .poll-option.is-selected {
+      border-color: var(--es-blue);
+    }
+
+    .poll-option.is-selected .poll-option-fill {
+      background: #d9ecff;
+    }
+
+    .poll-option-marker {
+      width: 15px;
+      height: 15px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #aab4c0;
+      border-radius: 50%;
+      background: var(--card);
+    }
+
+    .poll-option.is-selected .poll-option-marker {
+      border: 4px solid var(--es-blue);
+    }
+
+    .poll-card.is-poll-animating .poll-option-fill {
+      animation: poll-result-fill .52s cubic-bezier(.22, .78, .25, 1) both;
+    }
+
+    .poll-card.is-poll-animating .poll-option.is-selected {
+      animation: poll-choice-set .4s cubic-bezier(.2, .8, .25, 1);
+    }
+
+    .poll-card.is-poll-animating .poll-option.is-selected .poll-option-marker {
+      animation: poll-marker-pop .4s cubic-bezier(.2, .85, .25, 1.2);
+    }
+
+    @keyframes poll-result-fill {
+      from {
+        width: 0;
+      }
+      to {
+        width: var(--poll-result);
+      }
+    }
+
+    @keyframes poll-choice-set {
+      0% {
+        transform: translateY(0);
+      }
+      45% {
+        transform: translateY(-2px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes poll-marker-pop {
+      0% {
+        transform: scale(.7);
+      }
+      60% {
+        transform: scale(1.12);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .poll-option-label,
+    .poll-option-result {
+      position: relative;
+      z-index: 1;
+      font-size: 14px;
+      line-height: 1.25;
+    }
+
+    .poll-option-label {
+      font-weight: 500;
+    }
+
+    .poll-option-result {
+      font-weight: 700;
+    }
+
+    .poll-meta {
+      margin: 11px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
+    body.dark .poll-header {
+      border-bottom-color: rgba(255, 255, 255, 0.08);
+    }
+
+    body.dark .poll-option {
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+
+    body.dark .poll-option-fill {
+      background: rgba(20, 115, 230, 0.13);
+    }
+
+    body.dark .poll-option.is-selected .poll-option-fill {
+      background: rgba(20, 115, 230, 0.22);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .poll-card.is-poll-animating .poll-option-fill,
+      .poll-card.is-poll-animating .poll-option.is-selected,
+      .poll-card.is-poll-animating .poll-option.is-selected .poll-option-marker {
+        animation: none;
+      }
+    }
+
+    .youtube-meta {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .facebook-card .post-title {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.42;
+    }
+
+    .facebook-card .reaction-bar {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 14px;
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid var(--line);
+      background: var(--card);
+    }
+
+    .facebook-card .icon-row {
+      justify-content: space-around;
+      padding-block: 9px;
+    }
+
+    .reddit-card {
+      display: flex;
+    }
+
+    .reddit-votes {
+      display: none;
+      grid-row: 1 / span 3;
+      align-content: start;
+      justify-items: center;
+      gap: 6px;
+      padding-top: 14px;
+      border-right: 1px solid var(--line);
+      color: #ff4500;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .reddit-card .post-header,
+    .reddit-card .post-body,
+    .reddit-card .platform-actions {
+      grid-column: auto;
+    }
+
+    .reddit-card .post-title {
+      font-size: 17px;
+      line-height: 1.28;
+      font-weight: 700;
+    }
+
+    .reddit-card .subline {
+      color: var(--muted);
+    }
+
+    .reddit-card .icon-row {
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--muted);
+    }
+
+    .reddit-card .icon-row button {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .platform-actions,
+    .reaction-bar,
+    .reddit-votes {
+      display: none;
+    }
+
+    .threads-card .post-body {
+      display: grid;
+      gap: 12px;
+    }
+
+    .update-card {
+      min-height: 262px;
+      box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
+    }
+
+    .update-card .post-header {
+      padding-bottom: 8px;
+    }
+
+    .update-card .avatar {
+      width: 36px;
+      height: 36px;
+    }
+
+    .update-card .app-logo {
+      width: 24px;
+      height: 24px;
+    }
+
+    .update-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 9px;
+      color: #006633;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .update-label::before {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #c7e500;
+      content: "";
+    }
+
+    .update-card .post-title {
+      font-size: 17px;
+      line-height: 1.3;
+    }
+
+    .update-card .post-text {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .update-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: auto;
+      padding: 10px 14px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .thread-reply {
+      margin-left: 20px;
+      padding-left: 18px;
+      border-left: 2px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.42;
+    }
+
+    .thread-reply strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .site-footer {
+      margin-top: 10px;
+      background: #ffffff;
+      color: #111111;
+      font-family: "Roboto Condensed", "Roboto", Arial, sans-serif;
+      font-weight: 700;
+    }
+
+    .footer-hero {
+      padding: 74px 24px 28px;
+      background: var(--es-blue);
+      color: #ffffff;
+      text-align: center;
+    }
+
+    .footer-logo-img {
+      display: block;
+      width: auto;
+      max-width: min(100%, 820px);
+      height: clamp(30px, 6vw, 48px);
+      margin: 0 auto;
+    }
+
+    .footer-blurb {
+      width: min(980px, 100%);
+      margin: 18px auto 22px;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 18px;
+    }
+
+    .footer-socials {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .footer-socials a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .footer-socials img {
+      display: block;
+      width: 24px;
+      height: 24px;
+    }
+
+    .footer-copy {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .footer-links {
+      width: min(1200px, calc(100% - 48px));
+      display: grid;
+      grid-template-columns: 1.1fr 1.1fr 1.1fr 1.4fr;
+      gap: 44px;
+      margin: 0 auto;
+      padding: 34px 0 44px;
+    }
+
+    .footer-col {
+      display: flex;
+      flex-direction: column;
+      gap: 17px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .footer-col span {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .footer-col a,
+    .footer-bottom a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .footer-logo-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .footer-col.sports {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 36px;
+      row-gap: 17px;
+    }
+
+    .footer-bottom {
+      width: min(1200px, calc(100% - 48px));
+      display: flex;
+      justify-content: center;
+      gap: 22px;
+      flex-wrap: wrap;
+      margin: 0 auto;
+      padding: 20px 0 24px;
+      border-top: 1px solid #b5d8fd;
+      color: #7997b8;
+      font-family: "Roboto Condensed", "Roboto", Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    @media (max-width: 1020px) {
+      .feed {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .card-wide {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .site-nav {
+        min-height: 52px;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+      }
+
+      .site-logo img {
+        height: 25px;
+      }
+
+      .site-logo {
+        margin-right: 0;
+      }
+
+      .site-nav-toggle {
+        display: grid;
+        margin-left: auto;
+      }
+
+      .site-actions {
+        display: none;
+      }
+
+      .site-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        display: grid;
+        gap: 0;
+        width: 100%;
+        padding: 8px 14px 14px;
+        border-bottom: 1px solid var(--es-blue);
+        background: #ffffff;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateY(-8px);
+        transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
+      }
+
+      .site-nav.is-open .site-menu {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+
+      .site-menu a {
+        display: block;
+        padding: 12px 4px;
+        font-size: 17px;
+      }
+
+      .site-menu-button {
+        width: 100%;
+        justify-content: space-between;
+        padding: 12px 4px;
+        font-size: 17px;
+      }
+
+      .site-menu-item {
+        border-top: 1px solid #e6f2fe;
+      }
+
+      .site-menu > a:first-child {
+        border-top: 0;
+      }
+
+      .site-dropdown {
+        position: static;
+        min-width: 0;
+        display: none;
+        padding: 0 0 8px 10px;
+        border: 0;
+        box-shadow: none;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: none;
+      }
+
+      .site-menu-item.is-open .site-dropdown {
+        display: grid;
+      }
+
+      .page {
+        width: min(100% - 28px, var(--max));
+        padding-top: 0;
+      }
+
+      .score-ticker {
+        grid-template-columns: 78px minmax(0, 1fr);
+        min-height: 58px;
+        margin-bottom: 12px;
+      }
+
+      .ticker-title {
+        gap: 3px;
+        padding: 6px 5px 5px;
+        border-right-width: 2px;
+      }
+
+      .ticker-title img {
+        width: 24px;
+        height: 24px;
+      }
+
+      .ticker-title span {
+        font-size: 11px;
+      }
+
+      .ticker-card {
+        min-width: clamp(202px, calc(170px + (var(--score-count) * 25px)), 314px);
+        grid-template-columns: minmax(104px, 1fr) max-content;
+        gap: clamp(8px, calc(6px + (var(--score-count) * 1px)), 12px);
+        padding-inline: clamp(8px, calc(6px + (var(--score-count) * 1.3px)), 13px);
+      }
+
+      .ticker-updated {
+        display: none;
+      }
+
+      .hub-hero {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      h1 {
+        font-size: clamp(42px, 14vw, 58px);
+      }
+
+      .hub-meta {
+        justify-items: start;
+        text-align: left;
+      }
+
+      .feed {
+        grid-template-columns: 1fr;
+        grid-auto-rows: auto;
+      }
+
+      .social-card,
+      .card-mini,
+      .card-short,
+      .card-medium,
+      .card-tall,
+      .card-wide {
+        grid-column: auto;
+        grid-row: auto;
+        height: auto;
+      }
+
+      .card-title-slot {
+        padding: 15px 15px 12px;
+        font-size: 19px;
+      }
+
+      .poll-header {
+        padding-inline: 15px;
+      }
+
+      .poll-body {
+        padding: 15px;
+      }
+
+      .poll-question {
+        font-size: 19px;
+      }
+
+      .card-wide .post-body {
+        display: block;
+      }
+
+      .share-dialog-backdrop {
+        align-items: end;
+        padding: 12px;
+      }
+
+      .share-dialog {
+        width: 100%;
+        padding: 20px 16px 16px;
+        border-radius: 14px;
+        transform: translateY(18px) scale(0.98);
+      }
+
+      .footer-hero {
+        padding: 50px 18px 24px;
+      }
+
+      .footer-logo-img {
+        height: 34px;
+      }
+
+      .footer-blurb,
+      .footer-copy {
+        font-size: 14px;
+        line-height: 1.45;
+      }
+
+      .footer-links {
+        width: calc(100% - 36px);
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 28px 0 34px;
+      }
+
+      .footer-bottom {
+        width: calc(100% - 36px);
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .social-card.is-entry-highlight::after {
+        animation: none;
+        background: var(--entry-accent);
+        opacity: .5;
+      }
+
+      .share-dialog-backdrop,
+      .share-dialog,
+      .scroll-hint,
+      .scroll-hint-icon {
+        transition: none;
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+    <symbol id="icon-heart" viewBox="0 0 24 24"><path d="M20.8 4.6c-1.9-1.8-4.9-1.7-6.7.2L12 7l-2.1-2.2C8.1 2.9 5.1 2.8 3.2 4.6 1.1 6.6 1 10 3 12.1l9 8.9 9-8.9c2-2.1 1.9-5.5-.2-7.5z"/></symbol>
+    <symbol id="icon-comment" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-8.6 8.3 9.6 9.6 0 0 1-3-.5L3 21l1.8-5.7A8 8 0 0 1 3.7 11.5 8.4 8.4 0 0 1 12.3 3 8.4 8.4 0 0 1 21 11.5z"/></symbol>
+    <symbol id="icon-send" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4 20-7z"/></symbol>
+    <symbol id="icon-bookmark" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4V3z"/></symbol>
+    <symbol id="icon-thumbs-up" viewBox="0 0 24 24"><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/><path d="M7 11 12 2a3 3 0 0 1 3 3v4h5a2 2 0 0 1 2 2l-1 7a4 4 0 0 1-4 4H7V11z"/></symbol>
+    <symbol id="icon-thumbs-down" viewBox="0 0 24 24"><path d="M17 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"/><path d="M17 13 12 22a3 3 0 0 1-3-3v-4H4a2 2 0 0 1-2-2l1-7a4 4 0 0 1 4-4h10v11z"/></symbol>
+    <symbol id="icon-share" viewBox="0 0 24 24"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M16 6 12 2 8 6"/><path d="M12 2v14"/></symbol>
+    <symbol id="icon-repost" viewBox="0 0 24 24"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/></symbol>
+    <symbol id="icon-up" viewBox="0 0 24 24"><path d="M12 4 4 16h16L12 4z"/></symbol>
+    <symbol id="icon-down" viewBox="0 0 24 24"><path d="m12 20 8-12H4l8 12z"/></symbol>
+    <symbol id="icon-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="m8.5 12.5-2 8 5.5-3 5.5 3-2-8"/></symbol>
+    <symbol id="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7-11-7z"/></symbol>
+    <symbol id="icon-arrow-left" viewBox="0 0 24 24"><path d="M15 18 9 12l6-6"/></symbol>
+    <symbol id="icon-arrow-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="icon-swipe-up" viewBox="0 0 24 24"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V12"/><path d="M12 8.5a1.5 1.5 0 0 1 3 0V12"/><path d="M15 10a1.5 1.5 0 0 1 3 0v4.5A5.5 5.5 0 0 1 12.5 20H12a5 5 0 0 1-4-2l-2.7-3.6a1.4 1.4 0 0 1 2.1-1.8L9 14"/><path d="M7 4 5 2 3 4"/><path d="M5 2v6"/></symbol>
+    <symbol id="icon-close" viewBox="0 0 24 24"><path d="m6 6 12 12"/><path d="M18 6 6 18"/></symbol>
+    <symbol id="icon-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.1 1.1"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.1-1.1"/></symbol>
+  </svg>
+
+  <nav class="site-nav" aria-label="EssentiallySports primary navigation">
+    <a class="site-logo" href="https://www.essentiallysports.com/" aria-label="EssentiallySports home">
+      <img src="assets/brand-logo-blue.svg" alt="EssentiallySports">
+    </a>
+    <button class="site-nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="siteMenu" aria-label="Open navigation">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg>
+    </button>
+    <div class="site-menu" id="siteMenu">
+      <a href="https://www.essentiallysports.com/latest-news/">Latest</a>
+      <div class="site-menu-item">
+        <button class="site-menu-button" type="button" data-menu-trigger aria-expanded="false">Sports</button>
+        <div class="site-dropdown">
+          <a href="https://www.essentiallysports.com/category/nfl/">NFL</a>
+          <a href="https://www.essentiallysports.com/category/college-football/">College Football</a>
+          <a href="https://www.essentiallysports.com/category/college-basketball/">College Basketball</a>
+          <a href="https://www.essentiallysports.com/category/golf/">Golf</a>
+          <a href="https://www.essentiallysports.com/category/tennis/">Tennis</a>
+          <a href="https://www.essentiallysports.com/category/boxing/">Boxing</a>
+          <a href="https://www.essentiallysports.com/category/nba/">NBA</a>
+          <a href="https://www.essentiallysports.com/category/nascar/">NASCAR</a>
+          <a href="https://www.essentiallysports.com/category/olympics/">Olympics</a>
+          <a href="https://www.essentiallysports.com/category/ufc/">UFC</a>
+          <a href="https://www.essentiallysports.com/category/wnba/">WNBA</a>
+          <a href="https://www.essentiallysports.com/category/mlb/">MLB</a>
+        </div>
+      </div>
+      <a href="https://www.essentiallysports.com/newsletter-hub/">Newsletters</a>
+      <a href="https://www.essentiallysports.com/think-tank/">Think Tank</a>
+      <div class="site-menu-item">
+        <button class="site-menu-button" type="button" data-menu-trigger aria-expanded="false">Case Studies</button>
+        <div class="site-dropdown">
+          <a href="https://www.essentiallysports.com/case-studies/">Case Studies</a>
+          <a href="https://www.essentiallysports.com/partnerships/">Partnerships</a>
+          <a href="https://www.essentiallysports.com/events/">Events</a>
+        </div>
+      </div>
+    </div>
+    <div class="site-actions" aria-label="EssentiallySports social links">
+      <a href="https://www.facebook.com/essentiallysports" aria-label="Facebook"><img src="assets/social-icons/nav-facebook.svg" alt=""></a>
+      <a href="https://twitter.com/es_sportsnews" aria-label="X"><img src="assets/social-icons/nav-x.svg" alt=""></a>
+      <a href="https://www.linkedin.com/company/essentiallysports" aria-label="LinkedIn"><img src="assets/social-icons/nav-linkedin.svg" alt=""></a>
+      <a href="https://www.instagram.com/essentiallysportsmedia/" aria-label="Instagram"><img src="assets/social-icons/nav-instagram.svg" alt=""></a>
+      <a href="https://www.youtube.com/@EssentiallySportsMedia" aria-label="YouTube"><img src="assets/social-icons/nav-youtube.svg" alt=""></a>
+      <a href="https://news.google.com/publications/CAAqBwgKMJqW_gwwkoGBAw" aria-label="Google News"><img src="assets/social-icons/nav-google-news.svg" alt=""></a>
+    </div>
+  </nav>
+
+  <main class="page">
+    <section class="score-ticker" id="scoreTicker" data-ticker-endpoint="/api/score-ticker" data-refresh-ms="30000" aria-label="Wimbledon live scores ticker">
+      <div class="ticker-title">
+        <img src="assets/app-icons/wimbledon-championships.webp" alt="The Championships Wimbledon">
+        <div>
+          <span>Wimbledon<i class="ticker-live-dot" aria-hidden="true"></i></span>
+        </div>
+      </div>
+      <div class="ticker-window">
+        <div class="ticker-track" data-ticker-track>
+          <div class="ticker-loop">
+            <article class="ticker-card is-live">
+              <div class="ticker-status">S1</div>
+              <div class="ticker-match">
+                <span class="ticker-meta"><span class="ticker-court">Round 2</span><span class="ticker-divider"> · </span><span class="ticker-division">Men's Singles</span></span>
+                <div class="ticker-row"><span class="ticker-player">Hubert Hurkacz</span></div>
+                <div class="ticker-row"><span class="ticker-player">Sebastian Ofner</span></div>
+              </div>
+              <div class="ticker-score"><span class="score-set"><b>5</b><b>5</b></span></div>
+            </article>
+            <article class="ticker-card is-live">
+              <div class="ticker-status">S2</div>
+              <div class="ticker-match">
+                <span class="ticker-meta"><span class="ticker-court">No. 3 Court</span><span class="ticker-divider"> · </span><span class="ticker-division">Men's Singles</span></span>
+                <div class="ticker-row"><span class="ticker-player">SoonWoo Kwon</span></div>
+                <div class="ticker-row"><span class="ticker-player"><span class="ticker-seed">21</span>Tommy Paul</span></div>
+              </div>
+              <div class="ticker-score"><span class="score-set"><b>3</b><b>6</b></span><span class="score-set"><b>0</b><b>0</b></span></div>
+            </article>
+            <article class="ticker-card is-live">
+              <div class="ticker-status">S1</div>
+              <div class="ticker-match">
+                <span class="ticker-meta"><span class="ticker-court">Court 12</span><span class="ticker-divider"> · </span><span class="ticker-division">Men's Singles</span></span>
+                <div class="ticker-row"><span class="ticker-player">Marton Fucsovics</span></div>
+                <div class="ticker-row"><span class="ticker-player"><span class="ticker-seed">16</span>Learner Tien</span></div>
+              </div>
+              <div class="ticker-score"><span class="score-set"><b>4</b><b>2</b></span></div>
+            </article>
+            <article class="ticker-card is-live">
+              <div class="ticker-status">S1</div>
+              <div class="ticker-match">
+                <span class="ticker-meta"><span class="ticker-court">Court 18</span><span class="ticker-divider"> · </span><span class="ticker-division">Men's Singles</span></span>
+                <div class="ticker-row"><span class="ticker-player"><span class="ticker-seed">31</span>Jenson Brooksby</span></div>
+                <div class="ticker-row"><span class="ticker-player">Ignacio Buse</span></div>
+              </div>
+              <div class="ticker-score"><span class="score-set"><b>5</b><b>2</b></span></div>
+            </article>
+            <article class="ticker-card is-recent">
+              <div class="ticker-status">S4</div>
+              <div class="ticker-match">
+                <span class="ticker-meta"><span class="ticker-court">Court 11</span><span class="ticker-divider"> · </span><span class="ticker-division">Men's Singles</span></span>
+                <div class="ticker-row"><span class="ticker-player">P. Llamas Ruiz</span></div>
+                <div class="ticker-row"><span class="ticker-player">Zachary Svajda</span></div>
+              </div>
+              <div class="ticker-score"><span class="score-set"><b>6</b><b>4</b></span><span class="score-set"><b>3</b><b>6</b></span><span class="score-set"><b>6</b><b>7</b></span><span class="score-set"><b>4</b><b>2</b></span><span class="score-set score-point"><b>40</b><b>40</b></span></div>
+            </article>
+          </div>
+        </div>
+        <span class="ticker-updated" data-ticker-updated></span>
+      </div>
+    </section>
+
+    <section class="feed" id="socialFeed" data-feed-endpoint="/api/sport-feed" data-feed-fallback="data/sport-feed.json" data-youtube-endpoint="/api/sport-feed-youtube?q=tennis" data-youtube-fallback="data/sport-feed-youtube.json" data-og-endpoint="/api/sport-feed-og" data-infinite-batch="12" aria-label="Social cards">
+      <article class="social-card instagram-card card-tall">
+        <header class="post-header">
+          <img class="avatar" src="assets/profile-images/wimbledon.jpg" alt="Wimbledon profile image">
+          <div class="user-meta">
+            <div class="user-line"><span>wimbledon</span><img class="verified" src="assets/app-icons/verify.svg" alt="Verified"></div>
+            <span class="subline">Instagram · Centre Court</span>
+          </div>
+          <img class="app-logo" src="assets/app-icons/instagram.svg" alt="Instagram">
+        </header>
+        <div class="post-body">
+          <div class="media square">
+            <img src="assets/media/wimbledon/williams-joint.jpg" alt="Maya Joint and Serena Williams on Centre Court">
+          </div>
+          <div class="caption">
+            <p class="post-text"><strong>wimbledon</strong> Grass underfoot, all-white on court, and another packed day at SW19. The Championships are underway. <span class="tag">#Wimbledon</span></p>
+          </div>
+        </div>
+        <div class="platform-actions">
+          <div class="icon-row">
+            <button type="button" aria-label="Like"><svg><use href="#icon-heart"/></svg></button>
+            <button type="button" aria-label="Comment"><svg><use href="#icon-comment"/></svg></button>
+            <button type="button" aria-label="Share"><svg><use href="#icon-send"/></svg></button>
+            <button class="push" type="button" aria-label="Save"><svg><use href="#icon-bookmark"/></svg></button>
+          </div>
+          <div class="metrics">112K likes · 1.8K comments</div>
+        </div>
+      </article>
+
+      <article class="social-card youtube-card card-wide">
+        <h2 class="card-title-slot"><span class="card-title-kicker">2h ago</span><span class="card-title-text">Sinner and Djokovic tested early</span></h2>
+        <header class="post-header">
+          <img class="avatar" src="assets/profile-images/intuitive-tennis.jpg" alt="Intuitive Tennis profile image">
+          <div class="user-meta">
+            <div class="user-line"><span>Intuitive Tennis</span></div>
+            <span class="subline">YouTube · Day 1 analysis · Trending</span>
+          </div>
+          <img class="app-logo" src="assets/app-icons/youtube.svg" alt="YouTube">
+        </header>
+        <div class="post-body">
+          <button class="media wide video-preview youtube-thumb" type="button" data-video-src="https://www.youtube.com/watch?v=p-QcruyMXRQ" data-video-title="Sinner and Djokovic tested at Wimbledon Day 1" aria-label="Load Sinner and Djokovic tested at Wimbledon Day 1">
+            <img src="assets/media/youtube-thumbs/intuitive-tennis-wimbledon-day1.jpg" alt="Intuitive Tennis Wimbledon Day 1 analysis thumbnail">
+            <span class="play-badge"><svg><use href="#icon-play"/></svg></span>
+            <span class="video-duration">20:26</span>
+            <span class="video-source">YouTube</span>
+          </button>
+          <div>
+            <h2 class="post-title">Sinner & Djokovic Tested | Poor Start from ESPN | 2026 Wimbledon Day 1</h2>
+            <p class="youtube-meta">Intuitive Tennis · Yesterday</p>
+            <p class="post-text">A fast-turnaround creator breakdown on the two biggest men's storylines from Wimbledon Day 1.</p>
+          </div>
+        </div>
+        <div class="platform-actions">
+          <div class="icon-row">
+            <button type="button"><svg><use href="#icon-thumbs-up"/></svg> Like</button>
+            <button type="button"><svg><use href="#icon-thumbs-down"/></svg></button>
+            <button type="button"><svg><use href="#icon-comment"/></svg> Comment</button>
+            <button type="button"><svg><use href="#icon-share"/></svg> Share</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="social-card facebook-card card-medium">
+        <header class="post-header">
+          <img class="avatar" src="assets/profile-images/espn.jpg" alt="ESPN profile image">
+          <div class="user-meta">
+            <div class="user-line"><span>ESPN</span><img class="verified" src="assets/app-icons/verify.svg" alt="Verified"></div>
+            <span class="subline">Facebook · Wimbledon</span>
+          </div>
+          <img class="app-logo" src="assets/app-icons/facebook.svg" alt="Facebook">
+        </header>
+        <div class="post-body">
+          <h2 class="post-title">Maya Joint ends Serena Williams' Wimbledon comeback in three sets, winning 6-3, 6-7(6), 6-3 on Centre Court.</h2>
+          <div class="media wide">
+            <img src="assets/media/wimbledon/serena-joint-ap.jpg" alt="Serena Williams playing Maya Joint at Wimbledon">
+          </div>
+        </div>
+        <div class="reaction-bar"><span>👍 ❤️ 8.4K</span><span>1.2K comments · 346 shares</span></div>
+        <div class="platform-actions">
+          <div class="icon-row">
+            <button type="button"><svg><use href="#icon-thumbs-up"/></svg> Like</button>
+            <button type="button"><svg><use href="#icon-comment"/></svg> Comment</button>
+            <button type="button"><svg><use href="#icon-share"/></svg> Share</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="social-card reddit-card card-short">
+        <div class="reddit-votes"><button type="button" aria-label="Upvote"><svg><use href="#icon-up"/></svg></button><span>428</span><button type="button" aria-label="Downvote"><svg><use href="#icon-down"/></svg></button></div>
+        <header class="post-header">
+          <img class="avatar" src="assets/app-icons/avatar-reddit-tennis.svg" alt="Reddit tennis user avatar">
+          <div class="user-meta">
+            <div class="user-line"><span>u/Drip477</span></div>
+            <span class="subline">r/tennis · Post-Match Thread</span>
+          </div>
+          <img class="app-logo" src="assets/app-icons/reddit.png" alt="Reddit">
+        </header>
+        <div class="post-body">
+          <h2 class="post-title">Wimbledon R1: Borges def. [Q] Boyer 6-3, 7-5, 7-5</h2>
+          <p class="post-text">A clean straight-sets result, with the defending champion now waiting in round two.</p>
+        </div>
+        <div class="platform-actions">
+          <div class="icon-row">
+            <button type="button"><svg><use href="#icon-comment"/></svg> 128</button>
+            <button type="button"><svg><use href="#icon-award"/></svg> Award</button>
+            <button type="button"><svg><use href="#icon-share"/></svg> Share</button>
+            <button type="button"><svg><use href="#icon-bookmark"/></svg> Save</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="social-card threads-card card-short">
+        <header class="post-header">
+          <img class="avatar" src="assets/profile-images/es-logo.jpg" alt="EssentiallySports profile image">
+          <div class="user-meta">
+            <div class="user-line"><span>essentiallysportsmedia</span><img class="verified" src="assets/app-icons/verify.svg" alt="Verified"></div>
+            <span class="subline">Threads · Wimbledon · 2h</span>
+          </div>
+          <img class="app-logo" src="assets/app-icons/threads.svg" alt="Threads">
+        </header>
+        <div class="post-body">
+          <p class="post-text">Sinner got through, but Andy Roddick sees a warning sign: too many neutral balls on grass can become a “recipe for disaster.”</p>
+          <div class="thread-reply"><strong>@baselinebrief:</strong> Five sets in round one will sharpen him or drain him.</div>
+          <div class="thread-reply"><strong>@grasscourt:</strong> His movement improved as the match went on.</div>
+        </div>
+        <div class="platform-actions">
+          <div class="icon-row">
+            <button type="button" aria-label="Like"><svg><use href="#icon-heart"/></svg></button>
+            <button type="button" aria-label="Reply"><svg><use href="#icon-comment"/></svg></button>
+            <button type="button" aria-label="Repost"><svg><use href="#icon-repost"/></svg></button>
+            <button type="button" aria-label="Share"><svg><use href="#icon-send"/></svg></button>
+          </div>
+          <div class="metrics">8.9K views</div>
+        </div>
+      </article>
+
+      <article class="social-card instagram-card card-tall">
+        <header class="post-header">
+          <img class="avatar" src="assets/profile-images/es-logo.jpg" alt="EssentiallySports profile image">
+          <div class="user-meta">
+            <div class="user-line"><span>essentiallysportsmedia</span><img class="verified" src="assets/app-icons/verify.svg" alt="Verified"></div>
+            <span class="subline">Instagram · 8h</span>
+          </div>
+          <img class="app-logo" src="assets/app-icons/instagram.svg" alt="Instagram">
+        </header>
+        <div class="post-body">
+          <div class="media square">
+            <img src="assets/media/wimbledon/serena-joint-ap.jpg" alt="Maya Joint after defeating Serena Williams at Wimbledon">
+          </div>
+          <div class="caption">
+            <p class="post-text"><strong>essentiallysportsmedia</strong> Maya Joint found the words after the biggest win of her young career: “My legs weren’t moving.” They moved when it mattered. <span class="tag">#Wimbledon</span></p>
+          </div>
+        </div>
+        <div class="platform-actions">
+          <div class="icon-row">
+            <button type="button" aria-label="Like"><svg><use href="#icon-heart"/></svg></button>
+            <button type="button" aria-label="Comment"><svg><use href="#icon-comment"/></svg></button>
+            <button type="button" aria-label="Share"><svg><use href="#icon-send"/></svg></button>
+            <button class="push" type="button" aria-label="Save"><svg><use href="#icon-bookmark"/></svg></button>
+          </div>
+          <div class="metrics">31K likes · 824 comments</div>
+        </div>
+      </article>
+
+      <article class="social-card youtube-card card-medium">
+        <h2 class="card-title-slot"><span class="card-title-kicker">4h ago</span><span class="card-title-text">British storylines lead Day 1</span></h2>
+        <header class="post-header">
+          <img class="avatar" src="assets/profile-images/lta.jpg" alt="LTA profile image">
+          <div class="user-meta">
+            <div class="user-line"><span>LTA</span><img class="verified" src="assets/app-icons/verify.svg" alt="Verified"></div>
+            <span class="subline">YouTube · Day 1 highlights · Trending</span>
+          </div>
+          <img class="app-logo" src="assets/app-icons/youtube.svg" alt="YouTube">
+        </header>
+        <div class="post-body">
+          <button class="media wide video-preview youtube-thumb" type="button" data-video-src="https://www.youtube.com/watch?v=EbRLG9epU6I" data-video-title="LTA Wimbledon Day 1 highlights" aria-label="Load LTA Wimbledon Day 1 highlights">
+            <img src="assets/media/youtube-thumbs/lta-wimbledon-day1.jpg" alt="LTA Wimbledon Day 1 highlights thumbnail">
+            <span class="play-badge"><svg><use href="#icon-play"/></svg></span>
+            <span class="video-duration">3:52</span>
+            <span class="video-source">YouTube</span>
+          </button>
+          <h2 class="post-title">Best of the Brits | Wimbledon Day 1 Highlights | Norrie, Dart, Tavert, Xu, Jones & More</h2>
+          <p class="youtube-meta">LTA · 2 days ago</p>
+        </div>
+        <div class="platform-actions">
+          <div class="icon-row">
+            <button type="button"><svg><use href="#icon-thumbs-up"/></svg> Like</button>
+            <button type="button"><svg><use href="#icon-thumbs-down"/></svg></button>
+            <button type="button"><svg><use href="#icon-comment"/></svg> Comment</button>
+            <button type="button"><svg><use href="#icon-share"/></svg> Share</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="social-card reddit-card card-short">
+        <div class="reddit-votes"><button type="button" aria-label="Upvote"><svg><use href="#icon-up"/></svg></button><span>1.2K</span><button type="button" aria-label="Downvote"><svg><use href="#icon-down"/></svg></button></div>
+        <header class="post-header">
+          <img class="avatar" src="assets/app-icons/avatar-reddit-tennis.svg" alt="Reddit tennis user avatar">
+          <div class="user-meta">
+            <div class="user-line"><span>u/Mister_Lizard</span></div>
+            <span class="subline">r/tennis · Highlight</span>
+          </div>
+          <img class="app-logo" src="assets/app-icons/reddit.png" alt="Reddit">
+        </header>
+        <div class="post-body">
+          <h2 class="post-title">Crazy point from Sinner vs Kecmanovic</h2>
+          <p class="post-text">A Wimbledon highlight surfaced in the live r/tennis listing as fans reacted to Sinner's movement on grass.</p>
+        </div>
+        <div class="platform-actions">
+          <div class="icon-row">
+            <button type="button"><svg><use href="#icon-comment"/></svg> 94</button>
+            <button type="button"><svg><use href="#icon-award"/></svg> Award</button>
+            <button type="button"><svg><use href="#icon-share"/></svg> Share</button>
+            <button type="button"><svg><use href="#icon-bookmark"/></svg> Save</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="social-card facebook-card card-medium">
+        <header class="post-header">
+          <img class="avatar" src="assets/profile-images/es-logo.jpg" alt="EssentiallySports profile image">
+          <div class="user-meta">
+            <div class="user-line"><span>EssentiallySports Tennis</span><img class="verified" src="assets/app-icons/verify.svg" alt="Verified"></div>
+            <span class="subline">Facebook · Wimbledon live</span>
+          </div>
+          <img class="app-logo" src="assets/app-icons/facebook.svg" alt="Facebook">
+        </header>
+        <div class="post-body">
+          <h2 class="post-title">Jack Draper has withdrawn from The Championships. The British No.1's exit reshapes the home hopes at SW19.</h2>
+          <div class="media wide">
+            <img src="assets/media/wimbledon/jack-draper.jpg" alt="Jack Draper at Wimbledon">
+          </div>
+        </div>
+        <div class="reaction-bar"><span>👍 😮 2.7K</span><span>486 comments · 92 shares</span></div>
+        <div class="platform-actions">
+          <div class="icon-row">
+            <button type="button"><svg><use href="#icon-thumbs-up"/></svg> Like</button>
+            <button type="button"><svg><use href="#icon-comment"/></svg> Comment</button>
+            <button type="button"><svg><use href="#icon-share"/></svg> Share</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="social-card update-card card-mini">
+        <header class="post-header">
+          <img class="avatar" src="assets/profile-images/wimbledon.jpg" alt="Wimbledon profile image">
+          <div class="user-meta">
+            <div class="user-line"><span>Wimbledon</span><img class="verified" src="assets/app-icons/verify.svg" alt="Verified"></div>
+            <span class="subline">Official update · Day 3</span>
+          </div>
+          <img class="app-logo" src="assets/app-icons/wimbledon.svg" alt="Wimbledon website">
+        </header>
+        <div class="post-body">
+          <span class="update-label">Tournament watch</span>
+          <h2 class="post-title">The Championships run through Sunday, July 12</h2>
+          <p class="post-text">Ladies' doubles begins Thursday. Singles draws continue through the first week before the round of 16.</p>
+        </div>
+        <div class="update-footer"><span>29 Jun - 12 Jul</span><span>SW19</span></div>
+      </article>
+
+      <article class="social-card update-card card-mini">
+        <header class="post-header">
+          <img class="avatar" src="assets/app-icons/avatar-reddit-tennis.svg" alt="Wimbledon community avatar">
+          <div class="user-meta">
+            <div class="user-line"><span>r/wimbledon</span></div>
+            <span class="subline">Queue megathread · Live</span>
+          </div>
+          <img class="app-logo" src="assets/app-icons/reddit.png" alt="Reddit">
+        </header>
+        <div class="post-body">
+          <span class="update-label">Queue pulse</span>
+          <h2 class="post-title">More than 9,000 people reported in line by 7:15am</h2>
+          <p class="post-text">Day 3 filled quickly. Community updates moved from roughly 4,200 at 5am to above 9,300 after 7am.</p>
+        </div>
+        <div class="update-footer"><span>Updated today</span><span>Very busy</span></div>
+      </article>
+
+      <article class="social-card update-card card-mini">
+        <header class="post-header">
+          <img class="avatar" src="assets/profile-images/es-logo.jpg" alt="EssentiallySports profile image">
+          <div class="user-meta">
+            <div class="user-line"><span>EssentiallySports</span><img class="verified" src="assets/app-icons/verify.svg" alt="Verified"></div>
+            <span class="subline">Viewing guide · 1 day ago</span>
+          </div>
+        </header>
+        <div class="post-body">
+          <span class="update-label">How to watch</span>
+          <h2 class="post-title">US coverage begins at 6am ET across ESPN platforms</h2>
+          <p class="post-text">BBC carries all 18 courts in the UK, while ESPN and ESPN2 lead coverage for viewers in the United States.</p>
+        </div>
+        <div class="update-footer"><span>Live daily</span><span>18 courts</span></div>
+      </article>
+    </section>
+  </main>
+
+  <button class="scroll-hint" type="button" data-scroll-hint aria-label="Scroll for more stories">
+    <span class="scroll-hint-icon"><svg aria-hidden="true"><use href="#icon-swipe-up"></use></svg></span>
+  </button>
+
+  <footer class="site-footer">
+    <div class="footer-hero">
+      <a class="footer-logo-link" href="https://www.essentiallysports.com/"><img class="footer-logo-img" src="assets/brand-logo-white.svg" alt="EssentiallySports"></a>
+      <p class="footer-blurb">EssentiallySports is the home for the underserved fan, delivering storytelling that goes beyond the headlines. As a media platform, we combine deep audience insights with cultural trends, to meet fandom where it lives and where it goes next. Founded in 2014, EssentiallySports now engages with an audience of over 30m+ American sports fan on its website and 1m+ readers on its newsletters daily.</p>
+      <div class="footer-socials" aria-label="Social links">
+        <a href="https://www.facebook.com/essentiallysports" aria-label="Facebook"><img src="assets/social-icons/footer-facebook.svg" alt=""></a>
+        <a href="https://twitter.com/es_sportsnews" aria-label="X"><img src="assets/social-icons/footer-x.svg" alt=""></a>
+        <a href="https://www.linkedin.com/company/essentiallysports" aria-label="LinkedIn"><img src="assets/social-icons/footer-linkedin.svg" alt=""></a>
+        <a href="https://www.instagram.com/essentiallysportsmedia/" aria-label="Instagram"><img src="assets/social-icons/footer-instagram.svg" alt=""></a>
+        <a href="https://www.youtube.com/@EssentiallySportsMedia" aria-label="YouTube"><img src="assets/social-icons/footer-youtube.svg" alt=""></a>
+        <a href="https://news.google.com/publications/CAAqBwgKMJqW_gwwkoGBAw" aria-label="Google News"><img src="assets/social-icons/footer-google-news.svg" alt=""></a>
+      </div>
+      <div class="footer-copy">EssentiallySports Media, Inc. © 2026 | All Rights Reserved</div>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <span>EssentiallySports</span>
+        <a href="https://www.essentiallysports.com/about-us/">About Us</a>
+        <a href="https://www.essentiallysports.com/advertise-with-us/">Advertise With Us</a>
+        <a href="https://www.essentiallysports.com/authors/">Authors</a>
+        <a href="https://www.essentiallysports.com/editorial-team/">Editorial Team</a>
+        <a href="https://www.essentiallysports.com/editorial-policies/">Behind The Scenes</a>
+        <a href="https://www.essentiallysports.com/contact-us/">Contact Us</a>
+        <a href="https://www.essentiallysports.com/press/">Press</a>
+        <a href="https://www.essentiallysports.com/frequently-asked-questions/">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <span>Newsletters</span>
+        <a href="https://essentiallysports.beehiiv.com/">Lucky Dog on Track</a>
+        <a href="https://essentiallygolf.beehiiv.com/">Essentially Golf</a>
+        <a href="https://shegotgame.beehiiv.com/">She Got Game</a>
+        <a href="https://essentially-basketball.beehiiv.com/">Essentially Dunk</a>
+        <a href="https://essentiallyathletics.beehiiv.com/">Essentially Athletics</a>
+        <a href="https://the-nfl-huddle.beehiiv.com/">The Huddle</a>
+        <a href="https://chiefs-huddle.beehiiv.com/">Chiefs Huddle</a>
+        <a href="https://cowboys-huddle.beehiiv.com/">Cowboys Huddle</a>
+        <a href="https://steelers-huddle.beehiiv.com/">Steelers Huddle</a>
+        <a href="https://es-college-football.beehiiv.com/">Essentially CFB</a>
+        <a href="https://buckeye-daily.beehiiv.com/">Buckeye Daily</a>
+        <a href="https://www.essentiallysports.com/think-tank/">ES Think Tank</a>
+      </div>
+      <div class="footer-col">
+        <span>Podcasts</span>
+        <a href="https://www.essentiallysports.com/think-tank/">ES Think Tank</a>
+        <a href="https://www.essentiallysports.com/es-fancast/">ES Fancast</a>
+        <br>
+        <span>Events</span>
+        <a href="https://www.essentiallysports.com/wnba-all-star-2025/">WNBA All-Star 2025</a>
+        <a href="https://www.essentiallysports.com/us-open-2025/">US Open 2025</a>
+        <a href="https://www.essentiallysports.com/archive/">Archive</a>
+      </div>
+      <div class="footer-col sports">
+        <span>Sports</span><span></span>
+        <a href="https://www.essentiallysports.com/category/all/">All</a><a href="https://www.essentiallysports.com/category/college-football/">College Football</a>
+        <a href="https://www.essentiallysports.com/category/boxing/">Boxing</a><a href="https://www.essentiallysports.com/category/track-and-field/">Track And Field</a>
+        <a href="https://www.essentiallysports.com/category/golf/">Golf</a><a href="https://www.essentiallysports.com/category/gymnastics/">Gymnastics</a>
+        <a href="https://www.essentiallysports.com/category/nascar/">NASCAR</a><a href="https://www.essentiallysports.com/category/olympics/">Olympics</a>
+        <a href="https://www.essentiallysports.com/category/nba/">NBA</a><a href="https://www.essentiallysports.com/category/mlb/">MLB</a>
+        <a href="https://www.essentiallysports.com/category/nfl/">NFL</a><a href="https://www.essentiallysports.com/category/soccer/">Soccer</a>
+        <a href="https://www.essentiallysports.com/category/tennis/">Tennis</a><a href="https://www.essentiallysports.com/category/swimming/">Swimming</a>
+        <a href="https://www.essentiallysports.com/category/ufc/">UFC</a><a href="https://www.essentiallysports.com/category/nhl/">NHL</a>
+        <a href="https://www.essentiallysports.com/category/wnba/">WNBA</a><span></span>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <a href="https://www.essentiallysports.com/privacy-policy/">Privacy Policy</a>
+      <a href="https://www.essentiallysports.com/press/">ES Pressroom</a>
+      <a href="https://www.essentiallysports.com/ethics-policy/">Ethics Policy</a>
+      <a href="https://www.essentiallysports.com/fact-checking-policy/">Fact-Checking Policy</a>
+      <a href="https://www.essentiallysports.com/corrections-policy/">Corrections Policy</a>
+      <a href="https://www.essentiallysports.com/cookies-policy/">Cookies Policy</a>
+      <a href="https://www.essentiallysports.com/gdpr-compliance/">GDPR Compliance</a>
+      <a href="https://www.essentiallysports.com/terms-of-use/">Terms of Use</a>
+      <a href="https://www.essentiallysports.com/editorial-policies/">Editorial Guidelines</a>
+      <a href="https://www.essentiallysports.com/ownership-and-funding-information/">Ownership and funding Information</a>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById("themeToggle");
+    const themeIcon = document.getElementById("themeIcon");
+    const themeText = document.getElementById("themeText");
+    const siteNav = document.querySelector(".site-nav");
+    const navToggle = document.querySelector("[data-nav-toggle]");
+    const menuTriggers = document.querySelectorAll("[data-menu-trigger]");
+
+    function setTheme(theme) {
+      const dark = theme === "dark";
+      document.body.classList.toggle("dark", dark);
+      themeIcon.textContent = dark ? "☀" : "☾";
+      themeText.textContent = dark ? "Light" : "Dark";
+      localStorage.setItem("socialHubTheme", theme);
+    }
+
+    if (themeToggle && themeIcon && themeText) {
+      setTheme(localStorage.getItem("socialHubTheme") || "light");
+      themeToggle.addEventListener("click", () => {
+        setTheme(document.body.classList.contains("dark") ? "light" : "dark");
+      });
+    }
+
+    navToggle?.addEventListener("click", () => {
+      const isOpen = siteNav.classList.toggle("is-open");
+      navToggle.setAttribute("aria-expanded", String(isOpen));
+      navToggle.setAttribute("aria-label", isOpen ? "Close navigation" : "Open navigation");
+    });
+
+    menuTriggers.forEach((trigger) => {
+      trigger.addEventListener("click", () => {
+        const item = trigger.closest(".site-menu-item");
+        const isMobile = window.matchMedia("(max-width: 760px)").matches;
+        if (!isMobile || !item) return;
+        const isOpen = item.classList.toggle("is-open");
+        trigger.setAttribute("aria-expanded", String(isOpen));
+      });
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!siteNav?.contains(event.target)) {
+        siteNav?.classList.remove("is-open");
+        navToggle?.setAttribute("aria-expanded", "false");
+        menuTriggers.forEach((trigger) => {
+          trigger.closest(".site-menu-item")?.classList.remove("is-open");
+          trigger.setAttribute("aria-expanded", "false");
+        });
+      }
+    });
+
+    document.querySelectorAll(".icon-row button").forEach((button) => {
+      button.addEventListener("click", () => button.classList.toggle("active"));
+    });
+  </script>
+  <script id="socialHubStaticData" type="application/json">{"sport":"tennis","runs":[{"time":"8:15 AM ET","label":"Tennis Trending (US)","sport":"tennis","items":[{"source":"twitter","text":"Sinner becomes the first Italian man to win Wimbledon as Alcaraz falls short of a hat-trick.","handle":"@Wimbledon","url":"https://x.com/Wimbledon/status/1944463436030656688","views":"580k","likes":"19.2k","profileImage":"assets/profile-images/wimbledon.jpg","imageUrl":"assets/media/wimbledon/sinner-kecmanovic.jpg","timestamp":"8:15 AM ET"},{"source":"reddit","text":"Wimbledon R1: Borges def. [Q] Boyer 6-3, 7-5, 7-5","subreddit":"r/tennis","url":"https://reddit.com/r/tennis/comments/1uiuzz2/crazy_point_from_sinner_vs_kecmanovic/","score":"1850","comments":"445","timestamp":"8:15 AM ET"},{"source":"es","text":"Andy Roddick sees warning signs in Jannik Sinner's Wimbledon escape","url":"https://www.essentiallysports.com/?card=sinner","ogImage":"assets/media/wimbledon/jack-draper.jpg","description":"Sinner survived his opener, but Andy Roddick believes the defending champion left a few tactical concerns on the grass.","timestamp":"8:15 AM ET"},{"source":"instagram","text":"Maya Joint found the words after the biggest win of her young career.","handle":"wimbledon","url":"https://www.instagram.com/p/wimbledon-joint/","views":"760k","likes":"31.2k","imageUrl":"assets/media/wimbledon/serena-joint-ap.jpg","profileImage":"assets/profile-images/wimbledon.jpg","verified":true,"timestamp":"8:15 AM ET"}]},{"time":"10:45 AM ET","label":"Tennis Trending (US)","sport":"tennis","items":[{"source":"twitter","text":"Alcaraz survives Fritz and books a third straight Wimbledon final after another tight grass-court test.","handle":"@Wimbledon","url":"https://x.com/Wimbledon/status/1943696117998174525","views":"480k","likes":"17.1k","profileImage":"assets/profile-images/wimbledon.jpg","imageUrl":"assets/media/wimbledon/williams-joint.jpg","timestamp":"10:45 AM ET"},{"source":"reddit","text":"Fans debate whether five sets helped or hurt Sinner before round two.","subreddit":"r/tennis","url":"https://reddit.com/r/tennis/comments/1uiuzz2/crazy_point_from_sinner_vs_kecmanovic/#debate","score":"920","comments":"188","timestamp":"10:45 AM ET"},{"source":"es","text":"Jack Draper's withdrawal reshapes British hopes at SW19","url":"https://www.essentiallysports.com/?card=draper","ogImage":"assets/media/wimbledon/jack-draper.jpg","description":"The British No.1's exit changes the home story at Wimbledon and opens the door for a different name to carry the crowd.","timestamp":"10:45 AM ET"},{"source":"instagram","text":"Centre Court gave Maya Joint a night she will never forget.","handle":"essentiallysportsmedia","url":"https://www.instagram.com/p/es-maya-joint/","views":"410k","likes":"12.6k","imageUrl":"assets/media/wimbledon/serena-joint-ap.jpg","profileImage":"assets/profile-images/es-logo.jpg","verified":true,"timestamp":"10:45 AM ET"}]},{"time":"12:30 PM ET","label":"Tennis Trending (US)","sport":"tennis","items":[{"source":"twitter","text":"Wimbledon turns toward the Sinner-Djokovic stage after Alcaraz punches his ticket to Sunday.","handle":"@Wimbledon","url":"https://x.com/Wimbledon/status/1943696906674180595","views":"355k","likes":"8.8k","profileImage":"assets/profile-images/wimbledon.jpg","imageUrl":"assets/media/wimbledon/sinner-kecmanovic.jpg","timestamp":"12:30 PM ET"},{"source":"reddit","text":"Queue reports pass 9,000 before breakfast on another packed Wimbledon morning.","subreddit":"r/wimbledon","url":"https://reddit.com/r/wimbledon/comments/1twqis5/wimbledon_queue_2026_megathread/","score":"640","comments":"122","timestamp":"12:30 PM ET"},{"source":"es","text":"Where and how to watch Wimbledon in the United States","url":"https://www.essentiallysports.com/?card=watch","ogImage":"assets/media/wimbledon/williams-joint.jpg","description":"US coverage begins early across ESPN platforms while BBC carries every court for UK viewers.","timestamp":"12:30 PM ET"},{"source":"instagram","text":"Sinner's grass-court movement became the clip everyone replayed.","handle":"atptour","url":"https://www.instagram.com/p/atp-sinner-grass/","views":"295k","likes":"10.4k","imageUrl":"assets/media/wimbledon/williams-joint.jpg","profileImage":"assets/profile-images/sources/atptour.jpg","verified":true,"timestamp":"12:30 PM ET"}]}],"lastFile":"tennis-news-2026-07-01.md","fileCount":1,"fetchedAt":"2026-07-01T13:45:00.000Z","youtube":{"items":[{"source":"youtube","videoId":"p-QcruyMXRQ","title":"Sinner and Djokovic tested on Wimbledon day one","channel":"Wimbledon","thumbnail":"assets/media/youtube-thumbs/intuitive-tennis-wimbledon-day1.jpg","views":125000,"duration":"20:26","publishedAt":"2026-07-01T09:15:00Z","sourceUrl":"https://www.youtube.com/watch?v=p-QcruyMXRQ"},{"source":"youtube","videoId":"EbRLG9epU6I","title":"Best of Wimbledon day one highlights","channel":"Wimbledon","thumbnail":"assets/media/youtube-thumbs/lta-wimbledon-day1.jpg","views":84200,"duration":"3:52","publishedAt":"2026-07-01T07:30:00Z","sourceUrl":"https://www.youtube.com/watch?v=EbRLG9epU6I"}]}}</script>
+  <script src="assets/js/score-ticker.js?v=anthropic-live-status-1"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/youtube-video-element/+esm"></script>
+  <script src="assets/js/social-feed.js?v=es-ai-summary-v1"></script>
+</body>
+</html>
