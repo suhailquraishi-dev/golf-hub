@@ -1564,7 +1564,7 @@ const serveStatic = async (req, res, pathname) => {
   createReadStream(fullPath).pipe(res);
 };
 
-createServer(async (req, res) => {
+const requestHandler = async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
   try {
     if (url.pathname === "/api/sport-feed") return json(res, await sportFeed());
@@ -1584,6 +1584,12 @@ createServer(async (req, res) => {
     console.error(error);
     return json(res, { error: error.message }, 500);
   }
-}).listen(port, () => {
-  console.log(`ES Hub running at http://127.0.0.1:${port}`);
-});
+};
+
+export default requestHandler;
+
+if (!process.env.VERCEL) {
+  createServer(requestHandler).listen(port, () => {
+    console.log(`ES Hub running at http://127.0.0.1:${port}`);
+  });
+}
