@@ -1,15 +1,13 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "server.mjs",
-      "use": "@vercel/node"
+  "functions": {
+    "server.mjs": {
+      "runtime": "nodejs24.x"
     }
-  ],
-  "routes": [
+  },
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "/server.mjs"
+      "source": "/(.*)",
+      "destination": "/server.mjs"
     }
   ]
 }
