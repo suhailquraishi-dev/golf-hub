@@ -14,17 +14,18 @@
     threads: { icon: "assets/app-icons/threads.svg", name: "Threads" }
   };
 
-  const sourcePriority = ["youtube", "youtubeShorts", "es", "twitter", "reddit"];
+  const sourcePriority = ["youtube", "youtubeShorts", "twitter", "es", "instagram", "reddit"];
+  const FEED_REFRESH_MS = 15 * 60 * 1000;
   const pollDefinitions = [
     {
-      id: "mens-title-pick",
+      id: "us-open-pick",
       insertAfter: 6,
-      eyebrow: "Match Point",
-      question: "Who is your pick to win the Wimbledon men's singles title?",
+      eyebrow: "Major Watch",
+      question: "Who is your early pick for the next U.S. Open run?",
       options: [
-        { id: "sinner", label: "Jannik Sinner", votes: 1842 },
-        { id: "alcaraz", label: "Carlos Alcaraz", votes: 1716 },
-        { id: "djokovic", label: "Novak Djokovic", votes: 904 },
+        { id: "scheffler", label: "Scottie Scheffler", votes: 1842 },
+        { id: "rory", label: "Rory McIlroy", votes: 1716 },
+        { id: "bryson", label: "Bryson DeChambeau", votes: 904 },
         { id: "field", label: "Someone else", votes: 338 }
       ]
     },
@@ -32,37 +33,37 @@
       id: "storyline-following",
       insertAfter: 14,
       eyebrow: "Trending Now",
-      question: "Which Wimbledon storyline are you following most closely?",
+      question: "Which golf storyline are you following most closely?",
       options: [
-        { id: "title-race", label: "The men's title race", votes: 1268 },
-        { id: "breakthroughs", label: "Breakthrough runs", votes: 1074 },
-        { id: "british", label: "British hopes", votes: 816 },
-        { id: "five-setters", label: "Five-set drama", votes: 1492 }
+        { id: "us-open", label: "U.S. Open build-up", votes: 1268 },
+        { id: "liv-pga", label: "LIV vs PGA", votes: 1074 },
+        { id: "equipment", label: "Equipment changes", votes: 816 },
+        { id: "leaderboard", label: "Leaderboard drama", votes: 1492 }
       ]
     }
   ];
   const playerNames = [
-    ["serena williams", "Serena"],
-    ["novak djokovic", "Djokovic"],
-    ["jannik sinner", "Sinner"],
-    ["iga swiatek", "Swiatek"],
-    ["aryna sabalenka", "Sabalenka"],
-    ["coco gauff", "Gauff"],
-    ["alex eala", "Eala"],
-    ["otto virtanen", "Virtanen"],
-    ["carlos alcaraz", "Alcaraz"],
-    ["taylor fritz", "Fritz"],
-    ["alexander zverev", "Zverev"],
-    ["elena rybakina", "Rybakina"],
-    ["maya joint", "Joint"],
-    ["jack draper", "Draper"]
+    ["scottie scheffler", "Scheffler"],
+    ["rory mcilroy", "Rory"],
+    ["bryson dechambeau", "Bryson"],
+    ["tiger woods", "Tiger"],
+    ["jon rahm", "Rahm"],
+    ["brooks koepka", "Koepka"],
+    ["xander schauffele", "Schauffele"],
+    ["jordan spieth", "Spieth"],
+    ["justin thomas", "Thomas"],
+    ["collin morikawa", "Morikawa"],
+    ["ludvig åberg", "Åberg"],
+    ["ludvig aberg", "Aberg"],
+    ["tommy fleetwood", "Fleetwood"],
+    ["viktor hovland", "Hovland"]
   ];
   const feedState = {
     items: [],
     cursor: 0,
     cycle: 0,
     nextRenderIndex: 0,
-    batchSize: Number(feed.dataset.infiniteBatch || 12),
+    batchSize: Number(feed.dataset.infiniteBatch || 50),
     knownKeys: new Set(),
     sentinel: null,
     observer: null
@@ -110,6 +111,11 @@
     } catch {
       return "";
     }
+  };
+
+  const rotatedSourcePriority = () => {
+    const rotation = Math.floor(Date.now() / FEED_REFRESH_MS) % sourcePriority.length;
+    return [...sourcePriority.slice(rotation), ...sourcePriority.slice(0, rotation)];
   };
 
   const writePollVote = (pollId, optionId) => {
@@ -383,7 +389,7 @@
     return displayHeadline(first);
   };
 
-  const isGenericCardTitle = (value = "") => /^(a |the )?(moment|result|post|image|video|story|match|wimbledon moment|tennis moment).*(worth|watching|time|remember)|^a moment worth watching$/i
+  const isGenericCardTitle = (value = "") => /^(a |the )?(moment|result|post|image|video|story|match|golf moment).*(worth|watching|time|remember)|^a moment worth watching$/i
     .test(String(value).trim());
 
   const extractPlayers = (text = "") => {
@@ -400,10 +406,10 @@
     const has = (...terms) => terms.some((term) => text.includes(term));
 
     if (has("emotional", "tears", "crying", "broke down", "sobbing")) {
-      return p1 ? `${p1}'s emotion grips Centre Court` : "Raw emotion grips Centre Court";
+      return p1 ? `${p1}'s emotion changes the week` : "Raw emotion shifts golf's spotlight";
     }
     if (has("historic", "history", "first ever", "first player", "first time")) {
-      return p1 ? `${p1} makes Wimbledon history` : "Wimbledon history unfolds today";
+      return p1 ? `${p1} makes golf history` : "Golf history unfolds today";
     }
     if (has("upset", "stuns", "shock loss", "shock win", "knocks out")) {
       return p1 && p2 ? `${p1} stuns ${p2}` : "A shock result no one saw coming";
@@ -412,15 +418,21 @@
       return p1 ? `${p1} powers an inspired comeback` : "A stirring comeback takes shape";
     }
     if (has("hilarious", "funny", "jokes", "laughing")) {
-      return p1 ? `${p1} delivers a lighter moment` : "Wimbledon finds its lighter side";
+      return p1 ? `${p1} delivers a lighter moment` : "Golf finds its lighter side";
     }
     if (has("five-set", "thriller", "epic battle", "marathon")) {
-      return p1 && p2 ? `${p1}-${p2} epic grips Wimbledon` : "Five-set drama grips Wimbledon";
+      return p1 && p2 ? `${p1}-${p2} rivalry heats up` : "Major drama grips golf";
     }
-    if (has("def.", "defeated", "beats", "champion", "wins")) {
-      return p1 && p2 ? `${p1} keeps the dream alive` : "A result worth watching";
+    if (has("u.s. open", "us open", "major", "leaderboard", "final round")) {
+      return p1 ? `${p1} sharpens the major picture` : "Golf's biggest stage is heating up";
     }
-    return p1 ? `${p1} commands the Wimbledon spotlight` : shortHeadlineFromText(item.text || item.title);
+    if (has("equipment", "driver", "putter", "gear")) {
+      return p1 ? `${p1}'s equipment call turns heads` : "Equipment chatter gets louder";
+    }
+    if (has("wins", "winner", "champion", "playoff")) {
+      return p1 ? `${p1} keeps the dream alive` : "A result worth watching";
+    }
+    return p1 ? `${p1} commands golf's spotlight` : shortHeadlineFromText(item.text || item.title);
   };
 
   const ageHours = (item) => {
@@ -461,7 +473,7 @@
   const isWithinFreshnessWindow = (item) => {
     const hours = ageHours(item);
     const source = item.source || item.platform;
-    const windowHours = source === "es" ? 72 : source === "twitter" ? 8 : 15;
+    const windowHours = source === "es" || source === "twitter" ? 48 : 12;
     return Number.isFinite(hours) && hours >= 0 && hours <= windowHours;
   };
 
@@ -493,13 +505,13 @@
     const runs = Array.isArray(payload?.runs) ? payload.runs : [];
     const feedItems = runs.flatMap((run) => run.items || []);
     const text = feedItems.map((item) => `${item.text || ""} ${item.title || ""}`).join(" ").toLowerCase();
-    const sport = runs.find((run) => run.sport)?.sport || payload?.sport || "tennis";
+    const sport = runs.find((run) => run.sport)?.sport || payload?.sport || "golf";
     const terms = [sport];
-    if (text.includes("wimbledon")) terms.push("wimbledon 2026");
-    else if (text.includes("us open")) terms.push("us open 2026");
-    else if (text.includes("french open")) terms.push("roland garros 2026");
-    else if (text.includes("australian")) terms.push("australian open 2026");
-    ["serena", "sinner", "djokovic", "swiatek", "alcaraz", "sabalenka", "gauff", "fritz", "shelton", "zverev"]
+    if (text.includes("us open") || text.includes("u.s. open")) terms.push("U.S. Open");
+    else if (text.includes("masters")) terms.push("Masters Tournament");
+    else if (text.includes("liv")) terms.push("LIV Golf");
+    else if (text.includes("pga")) terms.push("PGA Tour");
+    ["scheffler", "mcilroy", "rory", "tiger", "bryson", "rahm", "koepka", "schauffele", "spieth", "morikawa"]
       .filter((player) => text.includes(player))
       .slice(0, 2)
       .forEach((player) => terms.push(player));
@@ -541,11 +553,12 @@
         : "youtube";
     };
     const sourceBias = {
-      youtube: 24,
-      youtubeShorts: 21,
-      es: 17,
-      twitter: 13,
-      reddit: 8
+      youtube: 30,
+      youtubeShorts: 27,
+      twitter: 24,
+      es: 21,
+      instagram: 14,
+      reddit: 10
     };
     const engagement = (item) => {
       if ((item.source || item.platform) === "youtube") return Number(item.views || 0);
@@ -554,12 +567,13 @@
           + (Number(item.tweetData?.retweet_count || 0) * 2)
           + Number(item.tweetData?.conversation_count || 0);
       }
+      if ((item.source || item.platform) === "instagram") return Number(item.likes || 0);
       if ((item.source || item.platform) === "reddit") return Number(item.score || 0);
       return 0;
     };
     const trendRank = (item) => {
       const source = sourceBucket(item);
-      const windowHours = source === "twitter" ? 8 : 15;
+      const windowHours = source === "twitter" || source === "es" ? 48 : 12;
       const age = Math.max(0, Math.min(windowHours, ageHours(item)));
       const recency = (windowHours - age) * 4;
       const breakingBoost = source === "twitter" && age <= 1 ? 26 : 0;
@@ -581,7 +595,7 @@
     const output = [];
     while ([...grouped.values()].some((group) => group.length)) {
       let added = false;
-      sourcePriority.forEach((source) => {
+      rotatedSourcePriority().forEach((source) => {
         const group = grouped.get(source);
         if (!group?.length) return;
         output.push(group.shift());
@@ -595,29 +609,32 @@
   const itemKey = (item) => item.url || item.sourceUrl || item.videoId || item.id || `${item.source}:${item.text}`;
 
   const sourceFallbackImage = (source) => ({
-    twitter: "assets/media/wimbledon/williams-joint.jpg",
-    instagram: "assets/media/wimbledon/serena-joint-ap.jpg",
-    reddit: "assets/media/wimbledon/williams-joint.jpg",
-    es: "assets/media/wimbledon/jack-draper.jpg"
+    twitter: "assets/media/golf/us-open-practice.jpg",
+    instagram: "assets/media/golf/golf-article-fallback.jpg",
+    reddit: "assets/media/golf/golf-article-fallback.jpg",
+    es: "assets/media/golf/us-open-practice.jpg"
   })[source] || "";
 
   const profileFallback = (source, handle = "") => {
     const key = String(handle).replace(/^@/, "").toLowerCase();
     const known = {
-      thetennisletter: "assets/profile-images/sources/TheTennisLetter.jpg",
-      relevanttennis: "assets/profile-images/sources/RelevantTennis.jpg",
-      atptour: "assets/profile-images/sources/atptour.jpg",
-      wimbledon: "assets/profile-images/wimbledon.jpg",
+      pgatour: "assets/profile-images/espn.jpg",
+      usga: "assets/profile-images/espn.jpg",
+      usopengolf: "assets/profile-images/espn.jpg",
+      themasters: "assets/profile-images/espn.jpg",
+      golfchannel: "assets/profile-images/espn.jpg",
+      livgolfleague: "assets/profile-images/espn.jpg",
+      dpworldtour: "assets/profile-images/espn.jpg",
       essentiallysportsmedia: "assets/profile-images/es-logo.jpg",
       essentiallysports: "assets/profile-images/es-logo.jpg",
       espn: "assets/profile-images/espn.jpg"
     };
     if (known[key]) return known[key];
     return {
-      youtube: "assets/profile-images/wimbledon.jpg",
+      youtube: "assets/profile-images/espn.jpg",
       twitter: "assets/social-icons/nav-x.svg",
       instagram: "assets/app-icons/instagram.svg",
-      reddit: "assets/app-icons/avatar-reddit-tennis.svg",
+      reddit: "assets/app-icons/reddit.png",
       es: "assets/profile-images/es-logo.jpg"
     }[source] || "assets/app-icons/es-logo-mark.svg";
   };
@@ -916,7 +933,7 @@
           avatarAlt: `${item.handle || "Instagram"} profile image`,
           verified: Boolean(item.verified)
         },
-        tags: item.tags || ["Wimbledon"],
+        tags: item.tags || ["Golf"],
         media: mediaItems.length > 1
           ? { type: "carousel", items: mediaItems, sourceUrl: item.url, aspect: "square" }
           : mediaItems.length === 1
@@ -937,11 +954,11 @@
         ...base,
         platform: "reddit",
         size: mediaItems.length ? "medium" : "short",
-        context: `${item.subreddit || "r/tennis"} · ${item.score || 0} upvotes`,
+        context: `${item.subreddit || "r/golf"} · ${item.score || 0} upvotes`,
         author: {
-          name: item.subreddit || "r/tennis",
-          avatar: item.profileImage || "assets/app-icons/avatar-reddit-tennis.svg",
-          avatarAlt: "Reddit tennis avatar",
+          name: item.subreddit || "r/golf",
+          avatar: item.profileImage || "assets/app-icons/reddit.png",
+          avatarAlt: "Reddit golf avatar",
           verified: false
         },
         media: mediaItems.length > 1
@@ -1234,13 +1251,12 @@
     const fragment = document.createDocumentFragment();
     for (let i = 0; i < count; i += 1) {
       if (feedState.cursor >= feedState.items.length) {
-        feedState.observer?.disconnect();
-        feedState.sentinel?.remove();
-        break;
+        feedState.cursor = 0;
+        feedState.cycle += 1;
       }
       const post = {
         ...feedState.items[feedState.cursor],
-        isReplay: false
+        isReplay: feedState.cycle > 0
       };
       const renderIndex = feedState.nextRenderIndex;
       feedState.nextRenderIndex += 1;
@@ -1597,6 +1613,12 @@
     }
   };
 
+  const applyAiTitlesWithTimeout = (payload, youtubePayload) =>
+    Promise.race([
+      applyAiTitles(payload, youtubePayload),
+      new Promise((resolve) => window.setTimeout(resolve, 2500))
+    ]);
+
   const fetchFeedPayloads = async () => {
     const endpoint = feed.dataset.feedEndpoint;
     const embedded = readEmbeddedPayload();
@@ -1607,7 +1629,7 @@
     const payload = await fetchJsonWithFallback(endpoint, feed.dataset.feedFallback);
     const youtubeEndpoint = endpointWithQuery(feed.dataset.youtubeEndpoint, buildYouTubeQuery(payload));
     const youtubePayload = await fetchJsonWithFallback(youtubeEndpoint, feed.dataset.youtubeFallback).catch(() => null);
-    await applyAiTitles(payload, youtubePayload);
+    await applyAiTitlesWithTimeout(payload, youtubePayload);
     return { payload, youtubePayload };
   };
 
@@ -1787,5 +1809,5 @@
   loadFeed();
   window.setInterval(() => {
     refreshFeed().catch((error) => console.warn("Feed refresh skipped.", error));
-  }, 2 * 60 * 1000);
+  }, FEED_REFRESH_MS);
 })();

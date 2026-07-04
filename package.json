@@ -1,9 +1,9 @@
 {
-  "name": "essentiallysports-social-hub",
+  "name": "essentiallysports-golf-hub",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "EssentiallySports Wimbledon social hub with markdown-backed feed parsing, source enrichment, and static fallbacks.",
+  "description": "EssentiallySports golf social hub with live feed parsing, source enrichment, and static fallbacks.",
   "scripts": {
     "start": "node server.mjs",
     "start:dev": "PORT=8765 node server.mjs",

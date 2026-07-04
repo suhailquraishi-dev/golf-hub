@@ -29,7 +29,11 @@ const feedDir = process.env.SPORT_FEED_DIR || path.join(root, "data", "feeds");
 const port = Number(process.env.PORT || 8765);
 const cache = new Map();
 const titleCache = new Map();
-const titlePromptVersion = "five-word-summary-v6";
+const titlePromptVersion = "golf-summary-v1";
+const SPORT = "golf";
+const PRIMARY_EVENT = "U.S. Open";
+const DEFAULT_WINDOW_HOURS = 12;
+const EXTENDED_WINDOW_HOURS = 48;
 const integrationStatus = {
   twitter: {
     configured: Boolean(process.env.TWITTER_BEARER_TOKEN),
@@ -39,38 +43,81 @@ const integrationStatus = {
     lastAttemptAt: null
   }
 };
-const verifiedChannels = [
-  "wimbledon", "atp tour", "wta", "espn", "bbc sport", "sky sports tennis", "sky sports",
-  "tennis channel", "tennis tv", "us open tennis", "roland garros", "australian open",
-  "eurosport", "amazon prime video sport", "bt sport", "nbc sports", "cbs sports",
-  "the london standard", "itf tennis", "laver cup", "davis cup"
-];
+const normalizeChannelName = (value = "") =>
+  String(value)
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+const verifiedChannels = new Set([
+  "pga tour",
+  "pgatour",
+  "the masters",
+  "masters",
+  "usga",
+  "united states golf association usga",
+  "u s open",
+  "us open",
+  "the open",
+  "liv golf",
+  "liv golf league",
+  "dp world tour",
+  "lpga",
+  "golf channel",
+  "nbc sports",
+  "cbs sports",
+  "espn",
+  "sky sports golf",
+  "the r and a",
+  "r and a",
+  "taylormade golf",
+  "callaway golf",
+  "titleist",
+  "ping golf",
+  "pxg"
+].map(normalizeChannelName));
 
 const officialYoutubeChannels = [
-  { handle: "@Wimbledon", channelId: "UCNa8NxMgSm7m4Ii9d4QGk1Q", channel: "Wimbledon", profileImage: "assets/profile-images/wimbledon.jpg" },
-  { handle: "@tennistv", channelId: "UCbcxFkd6B9xUU54InHv4Tig", channel: "Tennis TV", profileImage: "assets/profile-images/espn.jpg" },
-  { handle: "@atptour", channelId: "UCY_5h5zaSwN7Or4kIJDYNXA", channel: "ATP Tour", profileImage: "assets/profile-images/sources/atptour.jpg" },
-  { handle: "@wta", channelId: "UCaBIVVpHjq6j3tSyxwTE-8Q", channel: "WTA", profileImage: "assets/profile-images/espn.jpg" },
-  { handle: "@espn", channelId: "UCiWLfSweyRNmLpgEHekhoAg", channel: "ESPN", profileImage: "assets/profile-images/espn.jpg" }
+  { handle: "@PGATOUR", channel: "PGA TOUR", profileImage: "assets/profile-images/espn.jpg" },
+  { handle: "@TheMasters", channel: "The Masters", profileImage: "assets/profile-images/espn.jpg" },
+  { handle: "@usga", channel: "USGA", profileImage: "assets/profile-images/espn.jpg" },
+  { handle: "@usopengolf", channel: "U.S. Open", profileImage: "assets/profile-images/espn.jpg" },
+  { handle: "@TheOpen", channel: "The Open", profileImage: "assets/profile-images/espn.jpg" },
+  { handle: "@livgolf", channel: "LIV Golf", profileImage: "assets/profile-images/espn.jpg" },
+  { handle: "@DPWorldTour", channel: "DP World Tour", profileImage: "assets/profile-images/espn.jpg" },
+  { handle: "@GolfChannel", channel: "Golf Channel", profileImage: "assets/profile-images/espn.jpg" },
+  { handle: "@NBCSports", channel: "NBC Sports", profileImage: "assets/profile-images/espn.jpg" },
+  { handle: "@CBSSports", channel: "CBS Sports", profileImage: "assets/profile-images/espn.jpg" },
+  { handle: "@espn", channel: "ESPN", profileImage: "assets/profile-images/espn.jpg" },
+  { handle: "@SkySportsGolf", channel: "Sky Sports Golf", profileImage: "assets/profile-images/espn.jpg" },
+  { handle: "@TaylorMadeGolf", channel: "TaylorMade Golf", profileImage: "assets/profile-images/espn.jpg" },
+  { handle: "@CallawayGolf", channel: "Callaway Golf", profileImage: "assets/profile-images/espn.jpg" },
+  { handle: "@Titleist", channel: "Titleist", profileImage: "assets/profile-images/espn.jpg" }
 ];
 
 Object.assign(feedEngine.CONFIG, {
-  MIN_TWITTER_LIKES: 50,
+  MIN_TWITTER_LIKES: 70,
   MIN_INSTAGRAM_LIKES: 100,
   MIN_REDDIT_SCORE: 50,
   MIN_YOUTUBE_VIEWS: 500,
-  YOUTUBE_WINDOW_HOURS: 15,
-  YOUTUBE_WINDOW_EXTENDED_HOURS: 15
+  YOUTUBE_WINDOW_HOURS: DEFAULT_WINDOW_HOURS,
+  YOUTUBE_WINDOW_EXTENDED_HOURS: EXTENDED_WINDOW_HOURS
 });
 
 const profileFallback = (source, handle = "") => {
   const key = String(handle).replace(/^@/, "").toLowerCase();
   const known = {
-    thetennisletter: "assets/profile-images/sources/TheTennisLetter.jpg",
-    relevanttennis: "assets/profile-images/sources/RelevantTennis.jpg",
-    tennischannel: "assets/profile-images/espn.jpg",
-    atptour: "assets/profile-images/sources/atptour.jpg",
-    wimbledon: "assets/profile-images/wimbledon.jpg",
+    pgatour: "assets/profile-images/espn.jpg",
+    usga: "assets/profile-images/espn.jpg",
+    usopengolf: "assets/profile-images/espn.jpg",
+    themasters: "assets/profile-images/espn.jpg",
+    theopen: "assets/profile-images/espn.jpg",
+    livgolfleague: "assets/profile-images/espn.jpg",
+    livgolf: "assets/profile-images/espn.jpg",
+    dpworldtour: "assets/profile-images/espn.jpg",
+    golfchannel: "assets/profile-images/espn.jpg",
     essentiallysportsmedia: "assets/profile-images/essentiallysports.png",
     essentiallysports: "assets/profile-images/essentiallysports.png",
     espn: "assets/profile-images/espn.jpg"
@@ -79,7 +126,7 @@ const profileFallback = (source, handle = "") => {
   return {
     twitter: "assets/social-icons/nav-x.svg",
     instagram: "assets/app-icons/instagram.svg",
-    reddit: "assets/app-icons/avatar-reddit-tennis.svg",
+    reddit: "assets/app-icons/reddit.png",
     es: "assets/profile-images/essentiallysports.png"
   }[source] || "assets/app-icons/es-logo-mark.svg";
 };
@@ -227,7 +274,7 @@ const stableHash = (value = "") => {
 
 const passesSourceThreshold = (item) => {
   if (item.source === "twitter") {
-    return Number(item.tweetData?.favorite_count || 0) >= 50;
+    return Number(item.tweetData?.favorite_count || item.likes || 0) >= 70;
   }
   if (item.source === "instagram") return parseCount(item.likes) >= 100;
   if (item.source === "reddit") return parseCount(item.score) >= 50;
@@ -259,7 +306,7 @@ const redditToken = async () => {
       headers: {
         authorization: `Basic ${basic}`,
         "content-type": "application/x-www-form-urlencoded",
-        "user-agent": `essentiallysports-tennis-hub/1.0 by ${username}`
+        "user-agent": `essentiallysports-golf-hub/1.0 by ${username}`
       },
       body: new URLSearchParams({
         grant_type: "password",
@@ -310,12 +357,9 @@ const redditFeed = async () => {
   const token = await redditToken();
   if (!token) return [];
 
-  const fetchSubreddit = async (subreddit) => {
-    const target = new URL(`https://oauth.reddit.com/r/${subreddit}/search`);
+  const fetchSubreddit = async (subreddit, sort = "hot") => {
+    const target = new URL(`https://oauth.reddit.com/r/${subreddit}/${sort}`);
     target.search = new URLSearchParams({
-      q: "wimbledon OR tennis",
-      sort: "new",
-      restrict_sr: "on",
       t: "day",
       limit: "25",
       raw_json: "1"
@@ -323,7 +367,7 @@ const redditFeed = async () => {
     const response = await fetch(target.href, {
       headers: {
         authorization: `Bearer ${token}`,
-        "user-agent": "essentiallysports-tennis-hub/1.0"
+        "user-agent": "essentiallysports-golf-hub/1.0"
       },
       signal: timeoutSignal()
     });
@@ -332,21 +376,25 @@ const redditFeed = async () => {
     return (payload.data?.children || []).map((child) => child.data).filter(Boolean);
   };
 
-  const posts = await cached("reddit:latest-tennis", async () => {
-    const settled = await Promise.allSettled(["tennis", "wimbledon"].map(fetchSubreddit));
+  const posts = await cached("reddit:latest-golf", async () => {
+    const subreddits = ["golf", "progolf", "livgolf", "PGA_Tour", "GolfSwing"];
+    const settled = await Promise.allSettled(subreddits.flatMap((subreddit) => [
+      fetchSubreddit(subreddit, "hot"),
+      fetchSubreddit(subreddit, "rising")
+    ]));
     const all = settled.flatMap((result) => result.status === "fulfilled" ? result.value : []);
     const seen = new Set();
     return all
       .filter((post) => !post.over_18)
       .filter((post) => Number(post.score || 0) >= 50)
-      .filter((post) => /wimbledon|tennis|sinner|djokovic|alcaraz|gauff|sabalenka|swiatek|atp|wta/i.test(`${post.title} ${post.selftext || ""}`))
+      .filter((post) => golfStoryMatch(`${post.title} ${post.selftext || ""}`))
       .filter((post) => {
         if (seen.has(post.permalink)) return false;
         seen.add(post.permalink);
         return true;
       })
       .sort((a, b) => Number(b.created_utc || 0) - Number(a.created_utc || 0))
-      .slice(0, 8);
+      .slice(0, 12);
   }, 5 * 60 * 1000);
 
   return posts.map((post) => {
@@ -364,7 +412,7 @@ const redditFeed = async () => {
       imageUrl: mediaItems[0]?.src || null,
       ogImage: mediaItems[0]?.src || null,
       mediaItems,
-      profileImage: "assets/app-icons/avatar-reddit-tennis.svg",
+      profileImage: "assets/app-icons/reddit.png",
       imageFetchStatus: mediaItems.length ? "source" : "none",
       sourceFetchAttempted: true
     };
@@ -372,43 +420,64 @@ const redditFeed = async () => {
 };
 
 const prominentTwitterPlayers = [
-  ["jannik sinner", 2.1],
-  ["carlos alcaraz", 2.05],
-  ["novak djokovic", 2],
-  ["coco gauff", 1.9],
-  ["aryna sabalenka", 1.86],
-  ["iga swiatek", 1.82],
-  ["ben shelton", 1.68],
-  ["elena rybakina", 1.58],
-  ["jack draper", 1.54],
-  ["alexander zverev", 1.5],
-  ["taylor fritz", 1.46],
-  ["emma raducanu", 1.42],
-  ["sinner", 1.72],
-  ["alcaraz", 1.7],
-  ["djokovic", 1.68],
-  ["gauff", 1.62],
-  ["sabalenka", 1.6],
-  ["swiatek", 1.58],
-  ["shelton", 1.5],
-  ["rybakina", 1.42],
-  ["draper", 1.38],
-  ["zverev", 1.34],
-  ["fritz", 1.32],
-  ["raducanu", 1.3]
+  ["scottie scheffler", 2.15],
+  ["rory mcilroy", 2.08],
+  ["bryson dechambeau", 2.02],
+  ["tiger woods", 1.96],
+  ["jon rahm", 1.88],
+  ["brooks koepka", 1.82],
+  ["xander schauffele", 1.76],
+  ["jordan spieth", 1.68],
+  ["justin thomas", 1.62],
+  ["collin morikawa", 1.58],
+  ["ludvig aberg", 1.54],
+  ["ludvig åberg", 1.54],
+  ["tommy fleetwood", 1.48],
+  ["viktor hovland", 1.44],
+  ["scheffler", 1.68],
+  ["mcilroy", 1.64],
+  ["dechambeau", 1.6],
+  ["tiger", 1.56],
+  ["rahm", 1.5],
+  ["koepka", 1.46],
+  ["schauffele", 1.42],
+  ["spieth", 1.36],
+  ["morikawa", 1.32],
+  ["fleetwood", 1.28],
+  ["hovland", 1.24]
 ];
+
+const golfBoostTerms = [
+  "u.s. open", "us open", "pga tour", "liv golf", "dp world tour", "lpga",
+  "masters", "the open", "pga championship", "major championship", "qualifying",
+  "practice round", "pairings", "tee times", "press conference", "injury",
+  "withdrawal", "equipment", "leaderboard", "final round", "playoff",
+  "hole in one", "rules controversy", "record", "breaking"
+];
+
+const golfStoryMatch = (text = "") => {
+  const normalized = String(text).toLowerCase();
+  return /\b(golf|golfer|pga|lpga|liv|usga|u\.s\. open|us open|masters|the open|pga championship|dp world tour|ryder cup|fedex|leaderboard|tee time|fairway|green|birdie|eagle|bogey|putt|caddie|major championship)\b/i.test(normalized)
+    || prominentTwitterPlayers.some(([player]) => normalized.includes(player));
+};
+
+const golfTopicBoost = (text = "") => {
+  const normalized = String(text).toLowerCase();
+  let boost = /u\.s\. open|us open/.test(normalized) ? 2.4 : 1;
+  golfBoostTerms.forEach((term) => {
+    if (normalized.includes(term)) boost += 0.16;
+  });
+  return Math.min(boost, 3.2);
+};
 
 const twitterBearerToken = () => {
   return String(process.env.TWITTER_BEARER_TOKEN || "").trim();
 };
 
-const isTennisTwitterStory = (text = "") => {
+const isGolfTwitterStory = (text = "") => {
   const lowerText = String(text).toLowerCase();
   const hasPlayer = prominentTwitterPlayers.some(([player]) => lowerText.includes(player));
-  const royalAttendanceOnly = /\b(princess|catherine|royal|hrh|queen|king)\b/i.test(lowerText);
-  if (royalAttendanceOnly && !hasPlayer) return false;
-  const hasTennisContext = /\b(tennis|atp|wta|match|matches|centre court|court \d+|sets?|tie-?break|round|draw|serve|break point|champion|singles|doubles|defeats?|beats?|wins?|loses?|faces?|vs\.?)\b/i.test(lowerText);
-  return hasPlayer || (lowerText.includes("wimbledon") && hasTennisContext);
+  return hasPlayer || golfStoryMatch(lowerText);
 };
 
 const twitterFeed = async () => {
@@ -424,7 +493,7 @@ const twitterFeed = async () => {
     return [];
   }
 
-  const result = await cached("twitter:verified-tennis-8h:v3", async () => {
+  const result = await cached("twitter:golf-12h:v1", async () => {
     integrationStatus.twitter = {
       configured: true,
       mode: "requesting",
@@ -434,8 +503,8 @@ const twitterFeed = async () => {
     };
     const target = new URL("https://api.x.com/2/tweets/search/recent");
     target.search = new URLSearchParams({
-      query: "(Wimbledon OR #Wimbledon OR tennis OR Sinner OR Alcaraz OR Djokovic OR Gauff OR Sabalenka OR Swiatek OR Shelton OR Rybakina OR Draper) lang:en is:verified -is:retweet -is:reply",
-      start_time: new Date(Date.now() - 8 * 3_600_000).toISOString().replace(/\.\d{3}Z$/, "Z"),
+      query: "(golf OR \"U.S. Open\" OR \"US Open\" OR PGATOUR OR PGA OR LIVGolf OR LPGA OR \"Rory McIlroy\" OR \"Scottie Scheffler\" OR \"Tiger Woods\" OR \"Bryson DeChambeau\" OR \"Jon Rahm\") lang:en -is:retweet -is:reply",
+      start_time: new Date(Date.now() - DEFAULT_WINDOW_HOURS * 3_600_000).toISOString().replace(/\.\d{3}Z$/, "Z"),
       max_results: "100",
       expansions: "author_id,attachments.media_keys",
       "tweet.fields": "id,text,author_id,created_at,public_metrics,attachments,lang,possibly_sensitive",
@@ -447,7 +516,7 @@ const twitterFeed = async () => {
       headers: {
         authorization: `Bearer ${bearerToken}`,
         accept: "application/json",
-        "user-agent": "essentiallysports-tennis-hub/1.0"
+        "user-agent": "essentiallysports-golf-hub/1.0"
       },
       signal: AbortSignal.timeout(12_000)
     });
@@ -473,7 +542,7 @@ const twitterFeed = async () => {
         const publishedAt = String(tweet.created_at || "");
         const publishedMs = Date.parse(publishedAt);
         const ageHours = Number.isFinite(publishedMs) ? Math.max(0, (now - publishedMs) / 3_600_000) : Number.POSITIVE_INFINITY;
-        if (!user?.verified || likes < 50 || ageHours > 8 || tweet.possibly_sensitive || !isTennisTwitterStory(tweet.text)) return null;
+        if (likes < 70 || ageHours > EXTENDED_WINDOW_HOURS || tweet.possibly_sensitive || !isGolfTwitterStory(tweet.text)) return null;
 
         const attachedMedia = (tweet.attachments?.media_keys || []).map((key) => media.get(key)).filter(Boolean);
         const photos = attachedMedia
@@ -486,14 +555,15 @@ const twitterFeed = async () => {
         const lowerText = String(tweet.text || "").toLowerCase();
         const playerBoost = prominentTwitterPlayers.reduce((boost, [player, weight]) =>
           lowerText.includes(player) ? Math.max(boost, weight) : boost, 1);
-        const recentBoost = ageHours <= 1 ? 3.4 : ageHours <= 3 ? 1.55 : 1;
+        const recentBoost = ageHours <= 1 ? 3.4 : ageHours <= 3 ? 1.65 : ageHours <= 12 ? 1 : 0.62;
         const verifiedTypeBoost = /business|government/i.test(user.verified_type || "") ? 1.18 : 1;
+        const topicBoost = golfTopicBoost(tweet.text);
         const engagement = likes
           + (Number(tweet.public_metrics?.retweet_count || 0) * 2.5)
           + (Number(tweet.public_metrics?.quote_count || 0) * 2)
           + (Number(tweet.public_metrics?.reply_count || 0) * 0.75);
         const followerBoost = 1 + Math.min(0.45, Math.log10(Number(user.public_metrics?.followers_count || 0) + 1) / 20);
-        const trendScore = ((engagement + 50) * playerBoost * recentBoost * verifiedTypeBoost * followerBoost) / Math.pow(ageHours + 0.75, 0.82);
+        const trendScore = ((engagement + 50) * playerBoost * recentBoost * verifiedTypeBoost * topicBoost * followerBoost) / Math.pow(ageHours + 0.75, 0.82);
         const profileImage = String(user.profile_image_url || "").replace("_normal.", "_400x400.");
 
         return {
@@ -574,11 +644,12 @@ const isLatestSourceItem = (item = {}, feedDate = "") => {
   const published = itemPublishedMs(item, feedDate);
   if (!published) return false;
   const ageMs = Date.now() - published;
-  const windowHours = item.source === "es" ? 72 : item.source === "twitter" ? 8 : 15;
+  const windowHours = item.source === "es" ? EXTENDED_WINDOW_HOURS : item.source === "twitter" ? EXTENDED_WINDOW_HOURS : DEFAULT_WINDOW_HOURS;
   return ageMs >= 0 && ageMs <= windowHours * 60 * 60 * 1000;
 };
 
-const sourcePriority = ["youtube", "youtubeShorts", "es", "twitter", "reddit"];
+const sourcePriority = ["youtube", "youtubeShorts", "twitter", "es", "instagram", "reddit"];
+const FEED_REFRESH_MS = 15 * 60 * 1000;
 
 const itemSourceBucket = (item = {}) => {
   if (item.source !== "youtube") return item.source || "";
@@ -590,6 +661,11 @@ const sourcePriorityRank = (source = "") => {
   return index === -1 ? sourcePriority.length : index;
 };
 
+const rotatedSourcePriority = () => {
+  const rotation = Math.floor(Date.now() / FEED_REFRESH_MS) % sourcePriority.length;
+  return [...sourcePriority.slice(rotation), ...sourcePriority.slice(0, rotation)];
+};
+
 const sourceEngagement = (item = {}) => {
   if (item.source === "youtube") return Number(item.views || 0);
   if (item.source === "twitter") {
@@ -598,6 +674,7 @@ const sourceEngagement = (item = {}) => {
       + Number(item.tweetData?.conversation_count || 0);
   }
   if (item.source === "reddit") return Number(item.score || 0);
+  if (item.source === "instagram") return parseCount(item.likes);
   return 0;
 };
 
@@ -605,13 +682,14 @@ const sourceTrendRank = (item = {}, feedDate = "") => {
   const published = itemPublishedMs(item, feedDate);
   const ageHours = published ? Math.max(0, (Date.now() - published) / 3_600_000) : 999;
   const bucket = itemSourceBucket(item);
-  const windowHours = bucket === "twitter" ? 8 : 15;
+  const windowHours = bucket === "twitter" || bucket === "es" ? EXTENDED_WINDOW_HOURS : DEFAULT_WINDOW_HOURS;
   const recency = Math.max(0, windowHours - Math.min(windowHours, ageHours)) * 4;
   const breakingBoost = bucket === "twitter" && ageHours <= 1 ? 26 : 0;
   const serverTrend = Math.log10(Number(item.trendScore || 0) + 1) * 5;
   const engagement = Math.log10(sourceEngagement(item) + 1) * 9;
   const priority = (sourcePriority.length - sourcePriorityRank(bucket)) * 18;
-  return priority + recency + breakingBoost + serverTrend + engagement;
+  const topicBoost = golfTopicBoost(`${item.title || ""} ${item.text || ""} ${item.description || ""}`) * 18;
+  return priority + recency + breakingBoost + serverTrend + engagement + topicBoost;
 };
 
 const mixSourceItems = (items = [], feedDate = "") => {
@@ -627,7 +705,7 @@ const mixSourceItems = (items = [], feedDate = "") => {
   const output = [];
   while ([...grouped.values()].some((group) => group.length)) {
     let added = false;
-    sourcePriority.forEach((source) => {
+    rotatedSourcePriority().forEach((source) => {
       const group = grouped.get(source);
       if (!group?.length) return;
       const candidate = group.shift();
@@ -698,7 +776,7 @@ const parseMarkdownFeed = (source) => {
   for (const line of lines) {
     const header = line.match(/^##\s+(.+?)\s+—\s+(.+)$/);
     if (header) {
-      current = { time: header[1].trim(), label: header[2].trim(), sport: "tennis", items: [] };
+      current = { time: header[1].trim(), label: header[2].trim(), sport: SPORT, items: [] };
       runs.push(current);
       continue;
     }
@@ -725,9 +803,8 @@ const parseMarkdownFeed = (source) => {
   return runs;
 };
 
-const ES_TENNIS_FEED_URL = "https://www.essentiallysports.com/category/tennis/feed/";
-const ES_TENNIS_CATEGORY_ID = 507;
-const ES_ARTICLE_WINDOW_HOURS = 72;
+const ES_GOLF_FEED_URL = "https://www.essentiallysports.com/category/golf/feed/";
+const ES_GOLF_CATEGORY_ID = 2803;
 
 const rssTagValue = (source = "", tag = "") => {
   const escapedTag = tag.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -742,20 +819,20 @@ const stripHtml = (value = "") => decodeHtml(String(value)
   .replace(/\s+/g, " ")
   .trim());
 
-const esTennisFeed = async () => {
-  const items = await cached("es:tennis-rss", async () => {
+const esGolfFeed = async () => {
+  const items = await cached("es:golf-rss", async () => {
     const archiveUrl = new URL("https://www.essentiallysports.com/wp-json/wp/v2/posts");
     archiveUrl.search = new URLSearchParams({
-      categories: String(ES_TENNIS_CATEGORY_ID),
+      categories: String(ES_GOLF_CATEGORY_ID),
       per_page: "50",
       orderby: "date",
       order: "desc",
-      after: new Date(Date.now() - ES_ARTICLE_WINDOW_HOURS * 60 * 60 * 1000).toISOString(),
+      after: new Date(Date.now() - EXTENDED_WINDOW_HOURS * 60 * 60 * 1000).toISOString(),
       _embed: "wp:featuredmedia"
     }).toString();
 
     const [rssResult, archiveResult] = await Promise.allSettled([
-      fetchText(ES_TENNIS_FEED_URL, {
+      fetchText(ES_GOLF_FEED_URL, {
         accept: "application/rss+xml, application/xml, text/xml"
       }),
       fetchJson(archiveUrl.href, {}, 20000)
@@ -786,7 +863,7 @@ const esTennisFeed = async () => {
         profileImage: "assets/profile-images/es-logo.jpg",
         imageFetchStatus: mediaUrl ? "source" : "none",
         sourceFetchAttempted: Boolean(mediaUrl),
-        sourceFeed: ES_TENNIS_FEED_URL
+        sourceFeed: ES_GOLF_FEED_URL
       };
     });
 
@@ -808,7 +885,7 @@ const esTennisFeed = async () => {
         profileImage: "assets/profile-images/es-logo.jpg",
         imageFetchStatus: imageUrl ? "source" : "none",
         sourceFetchAttempted: Boolean(imageUrl),
-        sourceFeed: ES_TENNIS_FEED_URL
+        sourceFeed: ES_GOLF_FEED_URL
       };
     });
 
@@ -820,15 +897,24 @@ const esTennisFeed = async () => {
         seenUrls.add(item.url);
         return true;
       })
-      .sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
+      .sort((a, b) => sourceTrendRank(b) - sourceTrendRank(a) || Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
   }, 2 * 60 * 1000);
 
-  return items || [];
+  const pool = items || [];
+  const within = (hours) => pool.filter((item) => {
+    const published = Date.parse(item.publishedAt || item.timestamp || "");
+    return Number.isFinite(published) && Date.now() - published <= hours * 3_600_000;
+  });
+  return within(DEFAULT_WINDOW_HOURS).length >= 6
+    ? within(DEFAULT_WINDOW_HOURS)
+    : within(24).length >= 6
+      ? within(24)
+      : within(EXTENDED_WINDOW_HOURS);
 };
 
 const latestFeedFile = async () => {
   const entries = await readdir(feedDir);
-  const files = entries.filter((name) => /^tennis-news-\d{4}-\d{2}-\d{2}\.md$/.test(name)).sort();
+  const files = entries.filter((name) => /^golf-news-\d{4}-\d{2}-\d{2}\.md$/.test(name)).sort();
   const lastFile = files.at(-1);
   if (!lastFile) throw new Error("No markdown feed files found");
   return { lastFile, fileCount: files.length, fullPath: path.join(feedDir, lastFile) };
@@ -856,7 +942,7 @@ const sportFeed = async () => {
   const [latestTwitterItems, latestRedditItems, latestEsItems] = await Promise.all([
     twitterFeed(),
     redditFeed(),
-    esTennisFeed()
+    esGolfFeed()
   ]);
   const seenSourceUrls = new Set();
   const items = [...latestTwitterItems, ...latestRedditItems, ...latestEsItems, ...engineItems]
@@ -917,7 +1003,7 @@ const sportFeed = async () => {
   }, { total: 0, bySource: {}, imageFetchStatus: {} });
 
   return {
-    sport: engineResult.sport || "tennis",
+    sport: engineResult.sport || SPORT,
     items: mixed,
     totalCount: mixed.length,
     lastRun: engineResult.lastRun,
@@ -933,8 +1019,14 @@ const sportFeed = async () => {
   };
 };
 
-const channelIsVerified = (channel = "") =>
-  verifiedChannels.some((name) => new RegExp(`(^|\\b)${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(\\b|$)`, "i").test(channel));
+const channelIsVerified = (channel = "") => {
+  const normalized = normalizeChannelName(channel);
+  if (!normalized) return false;
+  if (verifiedChannels.has(normalized)) return true;
+  return Array.from(verifiedChannels).some((name) =>
+    normalized === name || normalized.startsWith(`${name} official`) || normalized.startsWith(`${name} tv`)
+  );
+};
 
 const textValue = (node) => {
   if (!node || typeof node !== "object") return "";
@@ -1018,8 +1110,7 @@ const youtubeLockupToItem = (lockup, channelConfig, query = "", isShort = false)
   const videoId = lockup.contentId || lockup.rendererContext?.commandContext?.onTap?.innertubeCommand?.watchEndpoint?.videoId;
   const thumbnail = lockup.contentImage?.thumbnailViewModel?.image?.sources?.at(-1)?.url?.replace(/\\u0026/g, "&");
   const searchable = `${title} ${channelConfig.channel}`.toLowerCase();
-  const tennisMatch = /\b(wimbledon|tennis|championships|atp|wta|sinner|djokovic|alcaraz|gauff|sabalenka|swiatek|raducanu|draper|highlights?)\b/i.test(searchable);
-  if (!videoId || !title || !tennisMatch || views < 500 || ageMs > 15 * 3_600_000) return null;
+  if (!videoId || !title || !golfStoryMatch(searchable) || views < 500 || ageMs > EXTENDED_WINDOW_HOURS * 3_600_000) return null;
   const publishedAt = new Date(Date.now() - ageMs).toISOString();
   const sourceUrl = isShort
     ? `https://www.youtube.com/shorts/${videoId}`
@@ -1043,6 +1134,7 @@ const youtubeLockupToItem = (lockup, channelConfig, query = "", isShort = false)
 };
 
 const youtubeRssItems = async (channelConfig, query = "") => {
+  if (!channelConfig.channelId) return [];
   const xml = await fetchText(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelConfig.channelId}`);
   const entries = xml.match(/<entry>[\s\S]*?<\/entry>/g) || [];
   return entries.map((entry) => {
@@ -1054,8 +1146,7 @@ const youtubeRssItems = async (channelConfig, query = "") => {
     const views = Number(entry.match(/<media:statistics\s+views=["'](\d+)/)?.[1] || 0);
     const ageHours = (Date.now() - Date.parse(publishedAt)) / 3_600_000;
     const searchable = `${title} ${channelConfig.channel}`;
-    const tennisMatch = /\b(wimbledon|tennis|championships|atp|wta|sinner|djokovic|alcaraz|gauff|sabalenka|swiatek|rybakina|raducanu|draper|highlights?)\b/i.test(searchable);
-    if (!videoId || !title || !sourceUrl || !Number.isFinite(ageHours) || ageHours < 0 || ageHours > 15 || views < 500 || !tennisMatch) {
+    if (!videoId || !title || !sourceUrl || !Number.isFinite(ageHours) || ageHours < 0 || ageHours > EXTENDED_WINDOW_HOURS || views < 500 || !golfStoryMatch(searchable)) {
       return null;
     }
     const isShort = /\/shorts\//i.test(sourceUrl);
@@ -1079,14 +1170,14 @@ const youtubeRssItems = async (channelConfig, query = "") => {
 };
 
 const scrapeOfficialYoutubeFeed = async (query = "", reason = "api-unavailable") => {
-  const items = await cached(`youtube-scrape:${query || "tennis"}`, async () => {
+  const items = await cached(`youtube-scrape:${query || SPORT}`, async () => {
     const rssResults = await Promise.allSettled(officialYoutubeChannels.map((channel) => youtubeRssItems(channel, query)));
     const rssItems = rssResults.flatMap((result) => result.status === "fulfilled" ? result.value : []);
     if (rssItems.length) {
       const dedupedRss = new Map(rssItems.map((item) => [item.videoId, item]));
       const all = [...dedupedRss.values()];
       const regular = all.filter((item) => !item.isShort).sort((a, b) => b.score - a.score).slice(0, 12);
-      const shorts = all.filter((item) => item.isShort).sort((a, b) => b.score - a.score).slice(0, 6);
+      const shorts = all.filter((item) => item.isShort).sort((a, b) => b.score - a.score).slice(0, 8);
       return [...regular, ...shorts];
     }
 
@@ -1113,7 +1204,7 @@ const scrapeOfficialYoutubeFeed = async (query = "", reason = "api-unavailable")
     });
     const all = [...deduped.values()];
     const regular = all.filter((item) => !item.isShort).sort((a, b) => b.score - a.score).slice(0, 12);
-    const shorts = all.filter((item) => item.isShort).sort((a, b) => b.score - a.score).slice(0, 6);
+    const shorts = all.filter((item) => item.isShort).sort((a, b) => b.score - a.score).slice(0, 8);
     return [...regular, ...shorts];
   }, 10 * 60 * 1000);
   return {
@@ -1144,7 +1235,7 @@ const youtubeFeed = async (query) => {
     const searchUrl = new URL("https://www.googleapis.com/youtube/v3/search");
     searchUrl.search = new URLSearchParams({
       part: "snippet",
-      q: query || "tennis wimbledon 2026",
+      q: query || "golf U.S. Open PGA Tour LIV Golf Rory McIlroy Scottie Scheffler",
       type: "video",
       order: "date",
       maxResults: "50",
@@ -1161,6 +1252,7 @@ const youtubeFeed = async (query) => {
     return (videos.items || [])
       .filter((item) => channelIsVerified(item.snippet?.channelTitle))
       .filter((item) => Number(item.statistics?.viewCount || 0) > 500)
+      .filter((item) => golfStoryMatch(`${item.snippet?.title || ""} ${item.snippet?.description || ""} ${item.snippet?.channelTitle || ""}`))
       .map((item) => {
         const views = Number(item.statistics.viewCount || 0);
         const age = Math.max(0, (Date.now() - new Date(item.snippet.publishedAt).getTime()) / 3_600_000);
@@ -1188,11 +1280,15 @@ const youtubeFeed = async (query) => {
       .sort((a, b) => b.score - a.score);
   };
   try {
-    const result = await cached(`youtube:${query || "tennis"}`, async () => {
-      const first = await fetchWindow(15);
+    const result = await cached(`youtube:${query || SPORT}`, async () => {
+      const first = await fetchWindow(DEFAULT_WINDOW_HOURS);
+      if (first.length >= 6) return { items: first, mode: "live" };
+      const expanded = await fetchWindow(24);
+      if (expanded.length >= 6) return { items: expanded, mode: "live-expanded-24h" };
+      const extended = await fetchWindow(EXTENDED_WINDOW_HOURS);
       return {
-        items: first,
-        mode: "live"
+        items: extended,
+        mode: extended.length ? "live-expanded-48h" : "live-empty"
       };
     });
     return result || fallbackYoutubeFeed("request-failed");
@@ -1356,11 +1452,11 @@ const parseJsonArray = (value = "") => {
 };
 
 const normalizeScoreItems = (items = []) => items.slice(0, 12).map((item, index) => ({
-  id: String(item.id || `wimbledon-match-${index + 1}`),
+  id: String(item.id || `golf-status-${index + 1}`),
   status: ["live", "recent", "scheduled"].includes(item.status) ? item.status : "recent",
   badge: String(item.badge || (item.status === "live" ? "LIVE" : item.status === "scheduled" ? "NEXT" : "FINAL")).slice(0, 8),
-  court: String(item.court || "Wimbledon"),
-  division: String(item.division || "Singles"),
+  court: String(item.court || item.tournament || "Golf"),
+  division: String(item.division || item.round || "Leaderboard"),
   playerOne: String(item.playerOne || ""),
   playerTwo: String(item.playerTwo || ""),
   seedOne: String(item.seedOne || ""),
@@ -1386,18 +1482,20 @@ const liveScoreFeed = async () => {
     return fallbackScores("disabled");
   }
 
-  const result = await cached("anthropic:wimbledon-live-scores", async () => {
+  const result = await cached("anthropic:golf-live-status", async () => {
     const now = new Date().toISOString();
-    const prompt = `Search the web for current or recently completed Wimbledon tennis match scores and statuses as of ${now}.
-Use reliable current score sources such as Wimbledon, ESPN, BBC Sport, or established live-score pages.
-Return only a valid JSON array with at most 12 live, scheduled, or recently completed matches.
+    const prompt = `Search the web for current or recently completed golf tournament leaderboard updates and statuses as of ${now}.
+Prioritize U.S. Open, PGA TOUR, LIV Golf, DP World Tour, LPGA, major championships, tee times, withdrawals, and press-conference updates.
+Use reliable current score sources such as PGA TOUR, USGA, ESPN Golf, Golf Channel, BBC Sport, Sky Sports Golf, or official tournament pages.
+Return only a valid JSON array with at most 12 live, scheduled, or recently completed golf status items.
 Each object must contain:
 id, status ("live", "recent", or "scheduled"), badge ("LIVE", "FINAL", or start status), court, division,
 playerOne, playerTwo, seedOne, seedTwo, sets (array of {"p1":"","p2":""}), point ({"p1":"","p2":""}),
 source, and sourceUrl.
-Set scores, current points, seeds, and court may be empty when the source does not expose them.
-Use badge "FINAL" for a verified completed result and "NEXT" for a verified upcoming match.
-Do not invent players, scores, courts, or URLs. Include a match when its players and status are credible even if granular scoring is unavailable.`;
+Use court for tournament or course, division for round/status, player fields for golfer names or headline entities.
+Use sets for score/position pairs when available, such as {"p1":"-6","p2":"1st"} or {"p1":"E","p2":"T12"}.
+Use badge "FINAL" for a verified completed result and "NEXT" for a verified upcoming tee time.
+Do not invent players, scores, tournaments, or URLs. Include an item when its golfers and status are credible even if granular scoring is unavailable.`;
 
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -1412,7 +1510,7 @@ Do not invent players, scores, courts, or URLs. Include a match when its players
         messages: [{ role: "user", content: prompt }],
         tools: [{ type: "web_search_20250305", name: "web_search", max_uses: 6 }]
       }),
-      signal: AbortSignal.timeout(60_000)
+        signal: AbortSignal.timeout(15_000)
     });
     if (!response.ok) throw new Error(`Anthropic score search returned ${response.status}`);
     const payload = await response.json();
@@ -1422,8 +1520,8 @@ Do not invent players, scores, courts, or URLs. Include a match when its players
     return {
       version: 1,
       generatedAt: new Date().toISOString(),
-      refreshSeconds: 300,
-      sourceLabel: "Wimbledon live score search",
+      refreshSeconds: 900,
+      sourceLabel: "Golf live status search",
       mode: "ai-search",
       items
     };

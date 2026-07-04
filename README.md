@@ -1,6 +1,6 @@
-# EssentiallySports Social Hub
+# EssentiallySports Golf Hub
 
-Clean handoff package for the Wimbledon social hub.
+Local handoff package for the Golf Social Hub.
 
 ## Run
 
@@ -10,8 +10,6 @@ Static packaged preview:
 open index.html
 ```
 
-This opens with the embedded packaged feed data. It is good for design review and AI handoff.
-
 Live/API mode:
 
 ```bash
@@ -20,80 +18,54 @@ npm start
 
 Then open `http://127.0.0.1:8765/`.
 
-No install step is required for the local server. The app uses Node built-ins and loads the YouTube custom element from CDN in `index.html`.
+Use live/API mode for source fetching, `/api/sport-feed`, YouTube, X, Reddit, ES Golf articles, score/status ticker, and auto-refresh.
 
-Use live/API mode when you want source fetching, `/api/sport-feed`, YouTube API, auto-refresh from newer markdown files, or server diagnostics. Plain `index.html` cannot call local API routes, so it uses embedded fallback data.
+## Feed Logic
 
-## Newsletter Entry Links
+The hub prioritizes golf stories from the last 12 hours, expanding to 24h and then 48h when needed. It boosts U.S. Open, PGA Tour, LIV Golf, DP World Tour, LPGA, major championship, leaderboard, practice round, press conference, injury, withdrawal, equipment, and breaking-news stories.
 
-Link a newsletter post to the hub with its stable card ID:
+Source priority:
 
-Use the URL produced by a card's Share button. Its format is:
-
-```text
-http://127.0.0.1:8765/?post=stable-card-id
-```
-
-The matching post moves to the first feed position and receives a brand-colored
-outline. Without a post parameter, the first regular feed card receives the same
-treatment. On mobile, the page gives one short preview of the next card after seven
-seconds, then returns to the entry card. The preview is skipped when the visitor
-interacts with the page or prefers reduced motion. Existing `#card-id` links remain
-supported.
+1. YouTube
+2. YouTube Shorts
+3. X
+4. EssentiallySports Golf articles
+5. Reddit
+6. Instagram fallback/editorial items
 
 ## Optional Environment
 
+Put local keys in `.env.local`:
+
 ```bash
-YOUTUBE_API_KEY=... npm start
-TWITTER_BEARER_TOKEN=... npm start
-SPORT_FEED_DIR=/absolute/path/to/data/feeds npm start
-PORT=8776 npm start
+YOUTUBE_API_KEY=
+TWITTER_BEARER_TOKEN=
+REDDIT_CLIENT_ID=
+REDDIT_CLIENT_SECRET=
+REDDIT_USERNAME=
+REDDIT_PWD=
+ANTHROPIC_API_KEY=
+SCORE_API_KEY=
+PORT=8765
 ```
 
-Without `YOUTUBE_API_KEY`, `/api/sport-feed-youtube` uses `data/sport-feed-youtube.json`.
-X recent search requires API credits on the app associated with `TWITTER_BEARER_TOKEN`.
-You can also put local secrets in `.env.local`; it is ignored by git. Use `.env.example` as the template.
+`.env.local` is ignored by Git.
 
 ## Important Files
 
 - `index.html` - full page, CSS, static fallback cards, script imports.
-- `server.mjs` - local backend, static server, markdown feed parser, source enrichment.
+- `server.mjs` - local backend, live source fetching, source ranking, and static server.
 - `assets/js/social-feed.js` - card mapping, interleave logic, infinite scroll, YouTube player replacement.
-- `assets/js/score-ticker.js` - Wimbledon ticker rendering.
-- `data/feeds/tennis-news-2026-07-01.md` - editorial feed input for Twitter/X, Reddit, ES, and Instagram.
+- `assets/js/score-ticker.js` - ticker rendering.
+- `data/feeds/golf-news-2026-07-04.md` - editorial fallback feed input.
 - `data/sport-feed.json` - static feed fallback.
-- `data/sport-feed-youtube.json` - YouTube fallback when no API key is present.
-- `docs/FEED_SYSTEM.md` - original backend/feed system contract.
-- `docs/AI_HANDOFF.md` - concise continuation notes for AI or engineers.
+- `data/sport-feed-youtube.json` - YouTube fallback.
+- `data/score-ticker.json` - ticker fallback.
 
 ## QC
 
 ```bash
 npm run check
 curl http://127.0.0.1:8765/api/sport-feed
-curl "http://127.0.0.1:8765/api/sport-feed-youtube?q=tennis%20wimbledon%202026%20sinner%20djokovic"
+curl "http://127.0.0.1:8765/api/sport-feed-youtube?q=golf%20U.S.%20Open%20PGA%20Tour"
 ```
-
-Expected current API state:
-
-- 12 parsed markdown items.
-- Twitter, Reddit, and ES fetch source media.
-- Instagram entries use local fallback media until real Instagram post URLs replace the placeholder shortcodes.
-- YouTube uses live API when `YOUTUBE_API_KEY` exists, otherwise static fallback.
-- If the YouTube API returns quota, rate-limit, or permission errors, the endpoint returns static fallback with `mode: "fallback"` instead of breaking the page.
-
-## Why Repeats Happen
-
-The page does not invent new social posts. Infinite scroll repeats older cards only after the available feed is exhausted, which keeps the page flowing. Real new updates appear when:
-
-- a newer markdown file is added to `data/feeds/`, or
-- the current markdown file receives new URLs/items, or
-- `YOUTUBE_API_KEY` is set and the YouTube API returns newer verified videos.
-
-The browser auto-refreshes every 15 minutes. When fresh item keys appear, they are inserted at the top and a short `new posts added` banner appears.
-
-When opening `index.html` directly from disk, new data will not appear automatically from APIs. Re-run the static embed step or use `npm start` for live data.
-
-## Notes
-
-The package intentionally excludes unused marketing/workspace images, `.DS_Store` files, and unused avatar/icon sets from the original working folder.

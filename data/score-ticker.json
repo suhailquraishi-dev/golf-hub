@@ -1,119 +1,75 @@
 {
   "version": 1,
-  "generatedAt": "2026-07-01T16:45:00+05:30",
-  "refreshSeconds": 30,
-  "sourceLabel": "Wimbledon live scores",
+  "generatedAt": "2026-07-04T15:05:01.416Z",
+  "refreshSeconds": 900,
+  "sourceLabel": "Golf live status fallback",
+  "mode": "fallback",
   "items": [
     {
-      "id": "hurkacz-ofner-r2",
+      "id": "golf-usopen-watch",
       "status": "live",
-      "badge": "S1",
-      "court": "Round 2",
-      "division": "Men's Singles",
-      "playerOne": "Hubert Hurkacz",
-      "playerTwo": "Sebastian Ofner",
+      "badge": "LIVE",
+      "court": "U.S. Open",
+      "division": "Practice watch",
+      "playerOne": "Scottie Scheffler",
+      "playerTwo": "Rory McIlroy",
+      "seedOne": "1",
+      "seedTwo": "",
       "sets": [
-        { "p1": "5", "p2": "5" }
+        {
+          "p1": "Prep",
+          "p2": "Major"
+        }
       ],
-      "point": { "p1": "", "p2": "" },
-      "source": "ESPN"
+      "point": {
+        "p1": "",
+        "p2": ""
+      },
+      "source": "Fallback / live-source pending"
     },
     {
-      "id": "kwon-paul-r2",
-      "status": "live",
-      "badge": "S2",
-      "court": "No. 3 Court",
-      "division": "Men's Singles",
-      "playerOne": "SoonWoo Kwon",
-      "playerTwo": "Tommy Paul",
-      "seedTwo": "21",
-      "sets": [
-        { "p1": "3", "p2": "6" },
-        { "p1": "0", "p2": "0" }
-      ],
-      "point": { "p1": "", "p2": "" },
-      "source": "ESPN"
-    },
-    {
-      "id": "fucsovics-tien-r2",
-      "status": "live",
-      "badge": "S1",
-      "court": "Court 12",
-      "division": "Men's Singles",
-      "playerOne": "Marton Fucsovics",
-      "playerTwo": "Learner Tien",
-      "seedTwo": "16",
-      "sets": [
-        { "p1": "4", "p2": "2" }
-      ],
-      "point": { "p1": "", "p2": "" },
-      "source": "ESPN"
-    },
-    {
-      "id": "brooksby-buse-r2",
-      "status": "live",
-      "badge": "S1",
-      "court": "Court 18",
-      "division": "Men's Singles",
-      "playerOne": "Jenson Brooksby",
-      "playerTwo": "Ignacio Buse",
-      "seedOne": "31",
-      "sets": [
-        { "p1": "5", "p2": "2" }
-      ],
-      "point": { "p1": "", "p2": "" },
-      "source": "ESPN"
-    },
-    {
-      "id": "llamas-svajda-r1",
+      "id": "golf-liv-pga",
       "status": "recent",
-      "badge": "S4",
-      "court": "Court 11",
-      "division": "Men's Singles",
-      "playerOne": "P. Llamas Ruiz",
-      "playerTwo": "Zachary Svajda",
+      "badge": "TREND",
+      "court": "Golf News",
+      "division": "Tour talks",
+      "playerOne": "LIV Golf",
+      "playerTwo": "PGA Tour",
+      "seedOne": "",
+      "seedTwo": "",
       "sets": [
-        { "p1": "6", "p2": "4" },
-        { "p1": "3", "p2": "6" },
-        { "p1": "6", "p2": "7" },
-        { "p1": "4", "p2": "2" }
+        {
+          "p1": "Hot",
+          "p2": "Watch"
+        }
       ],
-      "point": { "p1": "40", "p2": "40" },
-      "source": "Reference / live-score source"
+      "point": {
+        "p1": "",
+        "p2": ""
+      },
+      "source": "Fallback / live-source pending"
     },
     {
-      "id": "tiafoe-atmane-r1",
+      "id": "golf-equipment",
       "status": "recent",
-      "badge": "R1",
-      "court": "Court 12",
-      "division": "Men's Singles",
-      "playerOne": "Frances Tiafoe",
-      "playerTwo": "Terence Atmane",
-      "seedOne": "17",
+      "badge": "GEAR",
+      "court": "Equipment",
+      "division": "Major setup",
+      "playerOne": "Bryson DeChambeau",
+      "playerTwo": "Driver testing",
+      "seedOne": "",
+      "seedTwo": "",
       "sets": [
-        { "p1": "7", "p2": "6" },
-        { "p1": "6", "p2": "1" },
-        { "p1": "4", "p2": "6" },
-        { "p1": "0", "p2": "0" }
+        {
+          "p1": "Buzz",
+          "p2": "High"
+        }
       ],
-      "point": { "p1": "", "p2": "" },
-      "source": "ESPN"
-    },
-    {
-      "id": "joint-williams-r1",
-      "status": "recent",
-      "badge": "R1",
-      "court": "Centre Court",
-      "division": "Women's Singles",
-      "playerOne": "Maya Joint",
-      "playerTwo": "Serena Williams",
-      "sets": [
-        { "p1": "6", "p2": "3" },
-        { "p1": "6", "p2": "7" },
-        { "p1": "6", "p2": "3" }
-      ],
-      "point": { "p1": "", "p2": "" },
-      "source": "The Guardian"
+      "point": {
+        "p1": "",
+        "p2": ""
+      },
+      "source": "Fallback / live-source pending"
     }
   ]
 }

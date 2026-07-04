@@ -2,25 +2,25 @@
   "items": [
     {
       "source": "youtube",
-      "videoId": "p-QcruyMXRQ",
-      "title": "Sinner and Djokovic tested on Wimbledon day one",
-      "channel": "Wimbledon",
-      "thumbnail": "assets/media/youtube-thumbs/intuitive-tennis-wimbledon-day1.jpg",
+      "videoId": "golfhub-usopen-preview",
+      "title": "U.S. Open build-up takes center stage",
+      "channel": "PGA TOUR",
+      "thumbnail": "assets/media/youtube-thumbs-golf/us-open-preview.jpg",
       "views": 125000,
-      "duration": "20:26",
-      "publishedAt": "2026-07-01T09:15:00Z",
-      "sourceUrl": "https://www.youtube.com/watch?v=p-QcruyMXRQ"
+      "duration": "12:26",
+      "publishedAt": "2026-07-04T09:15:00Z",
+      "sourceUrl": "https://www.youtube.com/watch?v=golfhub-usopen-preview"
     },
     {
       "source": "youtube",
-      "videoId": "EbRLG9epU6I",
-      "title": "Best of Wimbledon day one highlights",
-      "channel": "Wimbledon",
-      "thumbnail": "assets/media/youtube-thumbs/lta-wimbledon-day1.jpg",
+      "videoId": "golfhub-practice-round",
+      "title": "Best golf practice round moments",
+      "channel": "Golf Channel",
+      "thumbnail": "assets/media/youtube-thumbs-golf/golf-highlights.jpg",
       "views": 84200,
       "duration": "3:52",
-      "publishedAt": "2026-07-01T07:30:00Z",
-      "sourceUrl": "https://www.youtube.com/watch?v=EbRLG9epU6I"
+      "publishedAt": "2026-07-04T07:30:00Z",
+      "sourceUrl": "https://www.youtube.com/watch?v=golfhub-practice-round"
     }
   ]
 }
